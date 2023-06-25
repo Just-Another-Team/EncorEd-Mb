@@ -7,19 +7,14 @@ import {
     Image
 } from 'react-native'
 import {Button} from 'react-native-paper'
-import { AuthStackParamList } from "../navigators/AuthStack"
-import { useNavigation } from "@react-navigation/native"
-
-type authScreenNavigationType = NativeStackNavigationProp<AuthStackParamList, 'Landing'>
+import * as navigation from '../navigators/RootNavigation'
 
 const Landing = () => {
-
-    const navigation = useNavigation<authScreenNavigationType>()
 
     return(
         <View style={styles.container}>
             <Image
-            source={require('../assets/Logo.png')}
+            source={require('../images/Logo.png')}
             style={{
                 width: 200,
                 height: 200
@@ -48,6 +43,7 @@ const Landing = () => {
                 mode="outlined"
                 textColor="#FFFFFF"
                 labelStyle={{fontSize: 16, fontWeight: 'bold'}}
+                onPress={() => navigation.navigate("Register")}
                 style={{borderColor: '#FFFFFF', borderWidth: 1.5, padding: 6, borderRadius: 128}}>
                     SIGN UP
                 </Button>
@@ -71,7 +67,8 @@ const styles = StyleSheet.create({
     },
     h1: {
         fontSize: 40,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'Inter'
     },
     title: {
         fontSize: 36,

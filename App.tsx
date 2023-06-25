@@ -9,11 +9,12 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
 import AuthStack from './src/navigators/AuthStack';
+import { navigationRef } from './src/navigators/RootNavigation';
 
 function App(): JSX.Element {
   return (
     <PaperProvider>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <AuthStack />
       </NavigationContainer>
     </PaperProvider>

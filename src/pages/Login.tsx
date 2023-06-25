@@ -1,23 +1,30 @@
+import { useNavigation } from "@react-navigation/native"
 import React from "react"
 import {
     View,
     Text,
-    ScrollView,
     StyleSheet,
     Image,
-    Alert
 } from 'react-native'
 import {
     Button,
     TextInput
 } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/FontAwesome5'
+import Icon from 'react-native-vector-icons/AntDesign'
+import * as navigation from '../navigators/RootNavigation'
+import {useForm} from 'react-hook-form'
 
 const Login = () => {
+    const { control, handleSubmit } = useForm()
+
+    const authenticationHandler = () => {
+        navigation.navigate("Home")
+    }
+
     return(
         <View style={styles.container}>
             <Image
-            source={require('../assets/Logo.png')}
+            source={require('../images/Logo.png')}
             style={{
                 width: 200,
                 height: 200
@@ -36,7 +43,7 @@ const Login = () => {
                 mode="outlined"
                 left={
                     <TextInput.Icon
-                    icon={() => <Icon name="user" size={24} style={{color: '#585667'}} color='#585667' />}
+                    icon={() => <Icon name="mail" size={24} style={{color: '#585667'}} color='#585667' />}
                     />
                 }
                 style={{backgroundColor: '#FFFFFF'}} />
@@ -60,13 +67,14 @@ const Login = () => {
                 mode="contained"
                 buttonColor="#296EB4"
                 textColor="#FDB833"
+                onPress={authenticationHandler}
                 labelStyle={{fontSize: 16, fontWeight: 'bold'}}
                 style={{padding: 6, borderRadius: 128, marginTop: 32}}>
                     LOGIN
                 </Button>
             </View>
 
-            <Text style={styles.p}>Don't have an account? <Text style={{color: '#FDB833', fontWeight: 'bold'}}>SIGN UP</Text></Text>
+            <Text style={styles.p}>Don't have an account? <Text onPress={() => navigation.navigate("Register")} style={{color: '#FDB833', fontWeight: 'bold'}}>SIGN UP</Text></Text>
 
         </View>
     )
