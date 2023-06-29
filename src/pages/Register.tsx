@@ -9,59 +9,87 @@ import {
 import { 
     Text,
     TextInput,
-    Button
+    Button,
+    Checkbox
 } from "react-native-paper";
-import Icon from 'react-native-vector-icons/AntDesign'
 import * as navigation from "../navigators/RootNavigation";
 import { Input } from "../components/Inputs";
-import {useForm} from 'react-hook-form'
+import { useForm } from 'react-hook-form'
+import { TextInputProps } from "../types/input";
 
 const RegisterPage = () => {
     const { control, handleSubmit } = useForm()
 
-    type registrationObjects = {
-        id: string, 
-        placeHolder: string, 
-        textContentType: 'givenName' | 'familyName' | 'emailAddress' | 'telephoneNumber' | 'password', 
-        secureEntryText: boolean, 
-        iconName: string;
-        required:boolean
-    };
+    const [checked, setChecked] = useState(false)
 
-    const inputs:registrationObjects[] = [
-        {id: "firstname", placeHolder: "First name", required: true, textContentType: 'givenName', secureEntryText: false, iconName: "user"},
-        {id: "lastname", placeHolder: "Last name", required: true, textContentType: 'familyName', secureEntryText: false, iconName: "user"},
-        {id: "email", placeHolder: "Email", required: true, textContentType: 'emailAddress', secureEntryText: false, iconName: "mail"},
-        {id: "phonenumber", placeHolder: "Phone number", required: true, textContentType: 'telephoneNumber', secureEntryText: false, iconName: "phone"},
-        {id: "password", placeHolder: "Password", required: true, textContentType: 'password', secureEntryText: true, iconName: "lock"},
-        {id: "confirmPassword", placeHolder: "Confirm Password", required: true, textContentType: 'password', secureEntryText: true, iconName: "lock"},
+    const inputs:TextInputProps[] = [
+        {id: "firstname", placeHolder: "First name", textContentType: 'givenName', secureEntryText: false, icon: "user"},
+        {id: "lastname", placeHolder: "Last name", textContentType: 'familyName', secureEntryText: false, icon: "user"},
+        {id: "email", placeHolder: "Email", textContentType: 'emailAddress', secureEntryText: false, icon: "mail"},
+        {id: "birthdate", placeHolder: "Birth date", icon: "phone"},
+        {id: "phonenumber", placeHolder: "Phone number", textContentType: 'telephoneNumber', secureEntryText: false, icon: "phone"},
+        {id: "password", placeHolder: "Password", textContentType: 'password', secureEntryText: true, icon: "lock"},
+        {id: "confirmPassword", placeHolder: "Confirm Password", textContentType: 'password', secureEntryText: true, icon: "lock"},
     ]
 
+    const errorHandler = (el: TextInputProps) => {
+        if (el.id === "firstname") return "First name is required!";
+        if (el.id === "lastname") return "Last name is required!"
+        if (el.id === "email") return "Email is required!";
+        if (el.id === "phonenumber") return "Phonenumber is required!";
+        if (el.id === "password") return "Password is required!"
+        if (el.id === "confirmPassword") return "Confirm Password is required!" //Change this. Make sure it matches with the password
+    }
+
     const onSignInPressed = (data:any) => {
-        console.log(data)
+        console.log(data);
+
+        navigation.navigate("Dashboard");
     }
 
     return(
-
-        <ScrollView contentContainerStyle={{flex: 1}}>
+        <ScrollView contentContainerStyle={{ padding: 28}}>
             <View style={styles.container}>
         
                 <View style={styles.loginContainer}>
                     <Text style={[styles.h5, styles.centerText, styles.textPrimary]}>Create Account</Text>      
 
-                    {inputs.map((el, ind) =>
-                        <Input 
-                        key={el.id}
-                        name={el.id}
-                        placeHolder={el.placeHolder}
-                        secureEntryText={el.secureEntryText}
-                        textContentType={el.textContentType}
-                        control={control}
-                        icon={el.iconName}
-                        required
-                        />
+                    {inputs.map((el, ind) => {
+
+                        if (el.id === "birthdate")
+                            return (
+                                <Text>{el.placeHolder}</Text>
+                            )
+
+                        return(
+                            <Input 
+                            key={el.id}
+                            name={el.id}
+                            placeHolder={el.placeHolder}
+                            secureEntryText={el.secureEntryText}
+                            textContentType={el.textContentType}
+                            control={control}
+                            icon={el.icon}
+                            rules={{required: errorHandler(el)}}
+                            />
+                        )
+                    }
                     )}
                     
+                    {/* Birthdate, Selecting a Campus Affiliated, Selecting Student-Faculty-Employee, If Student: Enter Course and year, Submit ID */}
+
+                    <View style={{display: "flex", flexDirection: "row", alignItems: "center", flexWrap: "wrap"}}>
+                        <Checkbox   
+                        status={checked ? 'checked' : 'unchecked'}
+                        color="#296EB4"
+                        uncheckedColor="#296EB4"
+                        onPress={() => setChecked(!checked)}
+                        />
+                        <Text style={{color: "#1F1F29", fontSize: 16}}>
+                            Agree with <Text style={{color: '#296EB4', fontWeight: 'bold'}}>Terms and Conditions</Text>
+                        </Text>
+                    </View>
+
                     <Button
                     mode="contained"
                     buttonColor="#296EB4"
@@ -74,7 +102,7 @@ const RegisterPage = () => {
                 </View>
 
                 <Text
-                style={[styles.p, {marginBottom: 32}]}>
+                style={[styles.p]}>
                     Already have an account? <Text onPress={() => navigation.navigate("Login")} style={{color: '#FDB833', fontWeight: 'bold'}}>SIGN IN</Text>
                 </Text>
 
@@ -88,9 +116,6 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 12,
         alignItems: 'center',
-        justifyContent: 'center', 
-        backgroundColor: '#45A1FD',
-        padding: 28
     },
     loginContainer: {
         backgroundColor: '#A2D0FE',
@@ -98,7 +123,6 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         display: 'flex',
         gap: 16,
-        marginTop: 32,
         padding: 24
     },
     centerText: {

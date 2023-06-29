@@ -1,13 +1,44 @@
 import React from 'react'
-import {ScrollView, View} from 'react-native'
-import { Text } from 'react-native-paper'
+import {Alert, ScrollView, View} from 'react-native'
+import { Chip, Text } from 'react-native-paper'
+import { Input } from '../../components/Inputs'
+import { useForm } from 'react-hook-form'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { navigate } from '../../navigators/RootNavigation'
 
 const Dashboard = () => {
+    const {control, handleSubmit} = useForm();
+
     return(
-        <ScrollView style={{padding: 16}}>
-            <View style={{backgroundColor: '#F9F9FF', borderRadius: 8, padding: 16}}>
-                <Text style={{color: '#FDB833', fontSize: 56, fontWeight: '700', textAlign: 'center'}}>Welcome</Text>
-                <Text style={{color: '#1789FC', fontSize: 56, fontWeight: '700', textAlign: 'center'}}>Full name here</Text>
+        <ScrollView style={{paddingLeft: 20, paddingTop: 10, paddingRight: 20}}>
+            <View style={{backgroundColor: '#F9F9FF', marginTop: 10, marginBottom: 10, borderRadius: 8, padding: 16}}>
+                <Text style={{color: '#FDB833', fontSize: 28, fontWeight: '700'}}>Welcome</Text>
+                <Text style={{color: '#1789FC', fontSize: 32, fontWeight: '700'}}>Full name here</Text>
+            </View>
+
+            <View style={{backgroundColor: '#F9F9FF', marginTop: 10, marginBottom: 10, borderRadius: 8, padding: 16, gap: 16}}>
+                <Input
+                name="searchRoom"
+                control={control}
+                label="Looking for a room?"
+                onPressIn={() => {navigate('Map')}}/>
+
+                <ScrollView horizontal contentContainerStyle={{gap: 12}}>
+                    <Chip style={{backgroundColor: '#548BC3'}} textStyle={{color: '#A2D0FE'}}>Room 217</Chip>
+                    <Chip style={{backgroundColor: '#548BC3'}} textStyle={{color: '#A2D0FE'}}>Room 218</Chip>
+                </ScrollView>
+            </View>
+
+            <View style={{backgroundColor: '#F9F9FF', marginTop: 10, marginBottom: 10, borderRadius: 8, padding: 16}}>
+                <Text style={{color: '#296EB4', fontSize: 20, fontWeight: '700',}}>Upcoming Events</Text>
+            </View>
+
+            <View style={{backgroundColor: '#F9F9FF', marginTop: 10, marginBottom: 10, borderRadius: 8, padding: 16}}>
+                <Text style={{color: '#296EB4', fontSize: 20, fontWeight: '700',}}>Current Subject</Text>
+            </View>
+
+            <View style={{backgroundColor: '#F9F9FF', marginTop: 10, marginBottom: 10, borderRadius: 8, padding: 16}}>
+                <Text style={{color: '#296EB4', fontSize: 20, fontWeight: '700',}}>Calendar</Text>
             </View>
         </ScrollView>
     )

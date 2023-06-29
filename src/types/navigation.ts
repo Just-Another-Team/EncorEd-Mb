@@ -4,10 +4,19 @@ export type AuthStackParamList = {
     Landing: undefined;
     Login: undefined;
     Register: undefined;
-    Home: undefined; //Needs parameters because authentication!
+    Profile: undefined;
+    Dashboard: undefined; //Needs parameters because authentication!
 }
 
-export interface RootStackParamList extends AuthStackParamList {}
+export type DashboardStackParamList = {
+    Home: undefined;
+    Subject: undefined;
+    Map: undefined;
+    Event: undefined;
+    Group: undefined;
+}
+
+export interface RootStackParamList extends AuthStackParamList, DashboardStackParamList {}
 
 // Global navigation
 declare global {

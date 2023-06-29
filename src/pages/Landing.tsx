@@ -59,14 +59,14 @@ const styles = StyleSheet.create({
         gap: 12,
         alignItems: 'center',
         justifyContent: 'center', 
-        backgroundColor: '#45A1FD',
+        backgroundColor: "#5BA4ED",
         padding: 28
     },
     centerText: {
         textAlign: 'center'
     },
     h1: {
-        fontSize: 40,
+        fontSize: 48,
         fontWeight: 'bold',
         fontFamily: 'Inter'
     },
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         color: '#296EB4'
     },
     p: {
-        fontSize: 18,
+        fontSize: 20,
     }
 })
 

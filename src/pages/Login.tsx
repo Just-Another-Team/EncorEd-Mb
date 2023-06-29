@@ -13,70 +13,77 @@ import {
 import Icon from 'react-native-vector-icons/AntDesign'
 import * as navigation from '../navigators/RootNavigation'
 import {useForm} from 'react-hook-form'
+import { TextInputProps } from "../types/input"
+import { Input } from "../components/Inputs"
+import { ScrollView } from "react-native"
 
 const Login = () => {
-    const { control, handleSubmit } = useForm()
+    const { 
+        control, 
+        handleSubmit,
+        formState: {errors}
+    } = useForm()
 
-    const authenticationHandler = () => {
-        navigation.navigate("Home")
+    const inputs:TextInputProps[] = [
+        {id: "email", placeHolder: "Email", textContentType: 'emailAddress', secureEntryText: false, icon: "mail"},
+        {id: "password", placeHolder: "Password", textContentType: 'password', secureEntryText: true, icon: "lock"},
+    ]
+
+    const errorHandler = (el: TextInputProps) => {
+        if (el.id === "email") return "Email is required!";
+
+        if (el.id === "password") return "Password is required!"
+    }
+
+    const authenticationHandler = (data: object) => {
+        console.log(data)
+
+        navigation.navigate("Dashboard")
     }
 
     return(
-        <View style={styles.container}>
-            <Image
-            source={require('../images/Logo.png')}
-            style={{
-                width: 200,
-                height: 200
-            }}/>
-            <Text style={[styles.centerText, styles.title]}>Encor<Text style={{color: '#FDB833'}}>Ed</Text></Text>
-        
-            <View style={styles.loginContainer}>
-                <Text style={[styles.h5, styles.centerText, styles.textPrimary]}>Login Account</Text>         
-                <TextInput
-                placeholder="Email"
-                textContentType={'emailAddress'}
-                placeholderTextColor='#7FA8D2'
-                outlineColor="#FFFFFF"
-                activeOutlineColor="#296EB4"
-                textColor="#548BC3"
-                mode="outlined"
-                left={
-                    <TextInput.Icon
-                    icon={() => <Icon name="mail" size={24} style={{color: '#585667'}} color='#585667' />}
-                    />
-                }
-                style={{backgroundColor: '#FFFFFF'}} />
-                
-                <TextInput
-                placeholder="Password"
-                secureTextEntry={true}
-                placeholderTextColor='#7FA8D2'
-                outlineColor="#FFFFFF" 
-                activeOutlineColor="#296EB4"
-                textColor="#548BC3"
-                mode="outlined"
-                left={
-                    <TextInput.Icon
-                    icon={() => <Icon name="lock" size={24} color='#585667' />}
-                    />
-                }
-                style={{backgroundColor: '#FFFFFF'}} />
-                
-                <Button
-                mode="contained"
-                buttonColor="#296EB4"
-                textColor="#FDB833"
-                onPress={authenticationHandler}
-                labelStyle={{fontSize: 16, fontWeight: 'bold'}}
-                style={{padding: 6, borderRadius: 128, marginTop: 32}}>
-                    LOGIN
-                </Button>
+        <ScrollView style={{padding: 28}}>
+            <View style={styles.container}>
+                <Image
+                source={require('../images/Logo.png')}
+                style={{
+                    width: 200,
+                    height: 200
+                }}/>
+                <Text style={[styles.centerText, styles.title]}>Encor<Text style={{color: '#FDB833'}}>Ed</Text></Text>
+            
+                <View style={styles.loginContainer}>
+                    <Text style={[styles.h5, styles.centerText, styles.textPrimary]}>Login Account</Text>         
+
+                    {inputs.map((el, ind) => 
+                        <Input 
+                        key={el.id}
+                        name={el.id}
+                        placeHolder={el.placeHolder}
+                        secureEntryText={el.secureEntryText}
+                        textContentType={el.textContentType}
+                        control={control}
+                        icon={el.icon}
+                        rules={{
+                            required: errorHandler(el)
+                        }}
+                        />
+                    )}
+                    
+                    <Button
+                    mode="contained"
+                    buttonColor="#296EB4"
+                    textColor="#FDB833"
+                    onPress={handleSubmit(authenticationHandler)}
+                    labelStyle={{fontSize: 16, fontWeight: 'bold'}}
+                    style={{padding: 6, borderRadius: 128, marginTop: 32}}>
+                        LOGIN
+                    </Button>
+                </View>
+
+                <Text style={styles.p}>Don't have an account? <Text onPress={() => navigation.navigate("Register")} style={{color: '#FDB833', fontWeight: 'bold'}}>SIGN UP</Text></Text>
             </View>
-
-            <Text style={styles.p}>Don't have an account? <Text onPress={() => navigation.navigate("Register")} style={{color: '#FDB833', fontWeight: 'bold'}}>SIGN UP</Text></Text>
-
-        </View>
+        </ScrollView>
     )
 }
 
@@ -86,8 +93,6 @@ const styles = StyleSheet.create({
         gap: 12,
         alignItems: 'center',
         justifyContent: 'center', 
-        backgroundColor: '#45A1FD',
-        padding: 28
     },
     loginContainer: {
         backgroundColor: '#A2D0FE',
