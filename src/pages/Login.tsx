@@ -38,7 +38,7 @@ const Login = () => {
     const authenticationHandler = (data: object) => {
         console.log(data)
 
-        navigation.navigate("Dashboard")
+        navigation.navigate("LoggedIn")
     }
 
     return(

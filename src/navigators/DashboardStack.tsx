@@ -29,13 +29,12 @@ const DashboardStack = () => {
                 return <Image style={{width: 48, height: 48, marginLeft: 16}} source={require('../images/Logo.png')} />
             },
             headerRight: () => {
-                return <IconButton onPress={() => navigation.navigate("Profile")} style={{marginRight: 16}} icon={() => <Icon size={36} name="user-circle-o" />} />
+                return <IconButton onPress={() => Alert.alert("To Profile")} style={{marginRight: 16}} icon={() => <Icon size={36} name="user-circle-o" />} />
             },
             headerStyle: {
                 backgroundColor: "#45A1FD",
                 height: 72
             },
-
             tabBarIcon: ({focused, color, size}) => {
                 let iconName: string = 'disc';
 

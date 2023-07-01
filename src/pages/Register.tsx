@@ -44,7 +44,7 @@ const RegisterPage = () => {
     const onSignInPressed = (data:any) => {
         console.log(data);
 
-        navigation.navigate("Dashboard");
+        navigation.navigate("LoggedIn");
     }
 
     return(

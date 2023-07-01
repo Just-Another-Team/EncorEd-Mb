@@ -15,11 +15,11 @@ import { TestTheme } from './src/styles';
 function App(): JSX.Element {
   return (
     <PaperProvider theme={TestTheme}>
-      <NavigationContainer ref={navigationRef}>
-        <GestureHandlerRootView style={{flex: 1}}>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <NavigationContainer ref={navigationRef}>
           <AuthStack />
-        </GestureHandlerRootView>
-      </NavigationContainer>
+        </NavigationContainer>
+      </GestureHandlerRootView>
     </PaperProvider>
   );
 }

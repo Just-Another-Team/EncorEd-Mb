@@ -38,10 +38,10 @@ const AuthStack = () => {
 
             {/* Must be in another stack navigator*/}
             <Stack.Screen
-            name="Dashboard"
+            name="LoggedIn"
             component={DashboardStack}/>
 
-            <Stack.Screen
+            {/* <Stack.Screen
             name="Profile"
             options={{
                 headerShown: true,
@@ -66,7 +66,7 @@ const AuthStack = () => {
                     backgroundColor: '#F6F5FF'
                 }
             }}
-            component={Profile}/>
+            component={Profile}/> */}
 
         </Stack.Navigator>
     )
