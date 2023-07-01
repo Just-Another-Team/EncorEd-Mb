@@ -10,12 +10,6 @@ import {useNavigationState} from '@react-navigation/native'
 const Map = () => {
     const {control, handleSubmit} = useForm();
 
-    const state = useNavigationState(state => state.routes)
-
-    useEffect(() => {
-        console.log(state[state.length]);
-    })
-
     return(
         <View style={{flex: 1, padding: 16}}>
             <View style={{backgroundColor: '#F9F9FF', borderRadius: 8, padding: 16}}>
