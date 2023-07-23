@@ -30,6 +30,7 @@ const RegisterPage = () => {
         {id: "phonenumber", placeHolder: "Phone number", textContentType: 'telephoneNumber', secureEntryText: false, icon: "phone"},
         {id: "password", placeHolder: "Password", textContentType: 'password', secureEntryText: true, icon: "lock"},
         {id: "confirmPassword", placeHolder: "Confirm Password", textContentType: 'password', secureEntryText: true, icon: "lock"},
+        //Select campus
     ]
 
     const errorHandler = (el: TextInputProps) => {
@@ -48,7 +49,7 @@ const RegisterPage = () => {
     }
 
     return(
-        <ScrollView contentContainerStyle={{ padding: 28}}>
+        <ScrollView contentContainerStyle={{ padding: 28 }}>
             <View style={styles.container}>
         
                 <View style={styles.loginContainer}>

@@ -3,6 +3,8 @@ import {ScrollView, View} from 'react-native'
 import { Text } from 'react-native-paper'
 import {Calendar, CalendarList} from 'react-native-calendars'
 import { HeaderCard } from '../../components/Cards'
+import { EventImage } from '../../types/images'
+import { navigate } from '../../navigators/RootNavigation'
 
 const Event = () => {
     return(
@@ -12,9 +14,7 @@ const Event = () => {
             <View style={{backgroundColor: '#F9F9FF', borderRadius: 8, padding: 16, marginTop: 8, marginBottom: 8, gap: 12}}>
                 <Text style={{color: '#296EB4', fontSize: 20, fontWeight: '700'}}>Upcoming Event</Text>
                 
-                <HeaderCard image={require('../../images/EventTestPic.png')}>
-                    AHHHHHHHHHHHHHHHHHHHHH
-                </HeaderCard>
+                <HeaderCard text='AHHHHHHHHHHH' image={EventImage} onPress={() => navigate('SelectedItem')} />
                 
                 <View style={{display: 'flex', flexDirection: 'row'}}>
                     <Text variant='bodyLarge' style={{fontWeight: '700', flex: 1}}>Location</Text>

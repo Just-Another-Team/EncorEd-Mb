@@ -16,13 +16,20 @@ import {useForm} from 'react-hook-form'
 import { TextInputProps } from "../types/input"
 import { Input } from "../components/Inputs"
 import { ScrollView } from "react-native"
+import { Logo } from "../types/images"
 
 const Login = () => {
     const { 
-        control, 
+        control,
+        reset,
         handleSubmit,
         formState: {errors}
     } = useForm()
+
+    const defaultValues = {
+        email: "",
+        password: ""
+    }
 
     const inputs:TextInputProps[] = [
         {id: "email", placeHolder: "Email", textContentType: 'emailAddress', secureEntryText: false, icon: "mail"},
@@ -31,13 +38,13 @@ const Login = () => {
 
     const errorHandler = (el: TextInputProps) => {
         if (el.id === "email") return "Email is required!";
-
         if (el.id === "password") return "Password is required!"
     }
 
     const authenticationHandler = (data: object) => {
         console.log(data)
 
+        reset({defaultValues})
         navigation.navigate("LoggedIn")
     }
 
@@ -45,7 +52,7 @@ const Login = () => {
         <ScrollView style={{padding: 28}}>
             <View style={styles.container}>
                 <Image
-                source={require('../images/Logo.png')}
+                source={Logo}
                 style={{
                     width: 200,
                     height: 200

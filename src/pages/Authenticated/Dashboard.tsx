@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { navigate } from '../../navigators/RootNavigation'
 import { ImageCard } from '../../components/Cards'
+import { EventImage, SubjectImage } from '../../types/images'
+import { Calendar } from 'react-native-calendars'
 
 const Dashboard = () => {
     const {control, handleSubmit} = useForm();
@@ -32,23 +34,17 @@ const Dashboard = () => {
 
             <View style={{backgroundColor: '#F9F9FF', marginTop: 10, marginBottom: 10, borderRadius: 8, padding: 16, gap: 12}}>
                 <Text style={{color: '#296EB4', fontSize: 20, fontWeight: '700',}}>Upcoming Events</Text>
-                <ImageCard>
-                    Image
-                </ImageCard>
+                <ImageCard onPress={() => navigate("SelectedItem")} image={EventImage} />
             </View>
 
             <View style={{backgroundColor: '#F9F9FF', marginTop: 10, marginBottom: 10, borderRadius: 8, padding: 16, gap: 12}}>
                 <Text style={{color: '#296EB4', fontSize: 20, fontWeight: '700',}}>Current Subject</Text>
-                <ImageCard>
-                    Image
-                </ImageCard>
+                <ImageCard onPress={() => navigate("SelectedItem")} image={SubjectImage} />
             </View>
 
             <View style={{backgroundColor: '#F9F9FF', marginTop: 10, marginBottom: 10, borderRadius: 8, padding: 16, gap: 12}}>
                 <Text style={{color: '#296EB4', fontSize: 20, fontWeight: '700',}}>Calendar</Text>
-                <ImageCard>
-                    Day 1
-                </ImageCard>
+                <Calendar />
             </View>
         </ScrollView>
     )

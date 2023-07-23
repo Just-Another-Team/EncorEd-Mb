@@ -9,6 +9,8 @@ import Login from "../pages/Login";
 import RegisterPage from "../pages/Register";
 import DashboardStack from "./DashboardStack";
 import Profile from "../pages/Authenticated/Profile";
+import DrawerStack from "./DrawerStack";
+import SelectedItem from "../pages/Authenticated/SelectedItem";
 
 
 const AuthStack = () => {
@@ -41,10 +43,19 @@ const AuthStack = () => {
             name="LoggedIn"
             component={DashboardStack}/>
 
-            {/* <Stack.Screen
+            <Stack.Screen name="SelectedItem" component={SelectedItem} options={{
+                headerStyle: {
+                    backgroundColor: "#45A1FD",
+                },
+                contentStyle: {
+                    backgroundColor: '#FFFFFF'
+                }
+            }}/>
+
+            <Stack.Screen
             name="Profile"
             options={{
-                headerShown: true,
+                headerShown: false,
                 headerTitle: () => {
                     return <Text style={{fontSize: 32, fontWeight: "700", color: '#296EB4', padding: 14}}>Encor<Text style={{fontWeight: '700', color: '#FDB833'}}>Ed</Text></Text>
                 },
@@ -66,7 +77,7 @@ const AuthStack = () => {
                     backgroundColor: '#F6F5FF'
                 }
             }}
-            component={Profile}/> */}
+            component={Profile}/>
 
         </Stack.Navigator>
     )

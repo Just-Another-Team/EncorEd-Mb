@@ -20,6 +20,7 @@ export type DashboardStackParamList = {
     Map: undefined;
     Event: undefined;
     Group: undefined;
+    SelectedItem: undefined;
 }
 
 export interface RootStackParamList extends AuthStackParamList, DrawerStackParamList, DashboardStackParamList {}

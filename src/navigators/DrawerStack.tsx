@@ -5,12 +5,13 @@ import Profile from "../pages/Authenticated/Profile"
 import { IconButton, Text } from "react-native-paper"
 import { Alert, Image } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { Logo } from "../types/images"
 
-const Tab = createDrawerNavigator()
+const Drawer = createDrawerNavigator()
 
 const DrawerStack = () => {
     return(
-        <Tab.Navigator
+        <Drawer.Navigator
             initialRouteName="Dashboard"
             screenOptions={{
                 headerTitle: () => {
@@ -21,7 +22,7 @@ const DrawerStack = () => {
                     fontWeight: 'bold',
                 },
                 headerLeft: () => {
-                    return <Image style={{width: 48, height: 48, marginLeft: 16}} source={require('../images/Logo.png')} />
+                    return <Image style={{width: 48, height: 48, marginLeft: 16}} source={Logo} />
                 },
                 headerRight: () => {
                     return <IconButton onPress={() => Alert.alert("To Profile")} style={{marginRight: 16}} icon={() => <Icon size={36} name="user-circle-o" />} />
@@ -32,9 +33,9 @@ const DrawerStack = () => {
                 },
                 drawerPosition: "right"
             }}>
-            <Tab.Screen name="Dashboard" component={Dashboard}/>
-            <Tab.Screen name="Profile" component={Profile} />
-        </Tab.Navigator>
+            <Drawer.Screen name="Dashboard" component={Dashboard}/>
+            <Drawer.Screen name="Profile" component={Profile} />
+        </Drawer.Navigator>
     )
 }
 

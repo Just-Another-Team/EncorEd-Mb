@@ -35,6 +35,7 @@ export const colors = (colorType: Color, shades?: number) => (
     colorType === "paleYellow" ? paleYellow(shades) : ""    
 )
 
+//Change name of the theme
 export const TestTheme = {
     ...DefaultTheme,
     colors: {
@@ -44,6 +45,11 @@ export const TestTheme = {
 }
 
 export const styles = StyleSheet.create({
+    debugBorders: {
+        borderWidth: 1,
+        borderColor: 'orange',
+        borderStyle: "solid"
+    },
     container: {
         flex: 1,
         gap: 12,
@@ -55,6 +61,7 @@ export const styles = StyleSheet.create({
     centerText: {
         textAlign: 'center'
     },
+    //These do not exist because of React Native Paper
     h1: {
         fontSize: 48,
         fontWeight: 'bold',

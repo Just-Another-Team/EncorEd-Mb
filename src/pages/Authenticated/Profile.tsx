@@ -1,6 +1,7 @@
 import React from 'react'
-import {ScrollView, View} from 'react-native'
-import { Avatar, Text } from 'react-native-paper'
+import {ScrollView, View, Alert} from 'react-native'
+import { Avatar, Button, Text } from 'react-native-paper'
+import { navigate } from '../../navigators/RootNavigation'
 
 const Profile = () => {
     return(
@@ -12,6 +13,8 @@ const Profile = () => {
                 <View style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18}}>
                     <Avatar.Image size={224} source={require('../../images/profilepic.png')} />
                     <Text style={{color: '#296EB4', fontSize: 32, fontWeight: '700', textAlign: 'center', marginBottom: 8}}>Full name</Text>
+                
+                    <Button mode='contained' onPress={() => navigate("Login")} style={{backgroundColor: '#EB002B'}}>LOGOUT</Button>
                 </View>
 
                 <View style={{gap: 16, backgroundColor: '#F9F9FF', borderRadius: 8, padding: 16, marginTop: 8, marginBottom: 8}}>
