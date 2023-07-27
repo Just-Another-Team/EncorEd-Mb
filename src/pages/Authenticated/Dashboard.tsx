@@ -24,7 +24,7 @@ const Dashboard = () => {
                 name="searchRoom"
                 control={control}
                 label="Looking for a room?"
-                onPressIn={() => {navigate('Map')}}/>
+                onPressIn={() => {}}/>
 
                 <ScrollView horizontal contentContainerStyle={{gap: 12}}>
                     <Chip style={{backgroundColor: '#548BC3'}} textStyle={{color: '#A2D0FE'}}>Room 217</Chip>

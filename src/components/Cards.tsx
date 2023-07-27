@@ -22,8 +22,6 @@ const ImageCard: React.FC<CardProps> = ({image, onPress, width}: CardProps) => {
                 }}
                 source={image}
                 /> 
-                {/* <Text
-                style={cardStyle.cardTextColor}>{children}</Text> */}
             </View>
         </TouchableOpacity>
     )
@@ -60,7 +58,31 @@ const HeaderCard: React.FC<CardProps> = ({image, onPress, text}: CardProps) => {
     )
 }
 
-export {ImageCard, HeaderCard}
+const SubjectCard = ({title, key, edpCode, schedule}:any) => {
+    return(
+        <View key={key} style={{backgroundColor: "#FAFAFA", padding: 16, gap: 8, borderRadius: 8}}>
+            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}> 
+                <Text style={{color: '#000000', fontSize: 16, fontWeight: '700'}}>{title}</Text>
+                <Text style={{color: '#000000', fontSize: 16}}>{edpCode}</Text>
+            </View>
+            <Text style={{color: '#000000', fontSize: 16}}>{schedule}</Text>
+        </View>
+    )   
+}
+
+const EventCard = ({title, key, date, schedule}:any) => {
+    return(
+        <View key={key} style={{backgroundColor: "#FAFAFA", padding: 16, gap: 8, borderRadius: 8}}>
+            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}> 
+                <Text style={{color: '#000000', fontSize: 16, fontWeight: '700'}}>{title}</Text>
+            </View>
+            <Text style={{color: '#000000', fontSize: 16}}>{date}</Text>
+            <Text style={{color: '#000000', fontSize: 16}}>{schedule}</Text>
+        </View>
+    )   
+}
+
+export {ImageCard, HeaderCard, SubjectCard, EventCard}
 
 const cardStyle = StyleSheet.create({
     card: {
