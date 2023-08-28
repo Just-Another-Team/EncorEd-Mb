@@ -3,33 +3,32 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IconFeather from 'react-native-vector-icons/Feather'
 import { Alert, Image, Pressable, View } from 'react-native'
-import { IconButton, Text } from "react-native-paper";
+import { IconButton, Text, TextInput } from "react-native-paper";
 import * as navigation from '../navigators/RootNavigation'
 import Dashboard from "../pages/Authenticated/Dashboard";
 import Subject from "../pages/Authenticated/Subject";
 import Map from "../pages/Authenticated/Map";
 import Event from "../pages/Authenticated/Event";
 import Group from "../pages/Authenticated/Group";
+import Profile from "../pages/Authenticated/Profile";
+import { Input } from "../components/Inputs";
+import { useForm } from "react-hook-form";
 
 const Tab = createBottomTabNavigator()
 
 const DashboardStack = () => {
+    const {control, handleSubmit} = useForm();
 
     return(
         <Tab.Navigator
         screenOptions={({route}) => ({
-            headerTitle: () => {
-                return <Text style={{fontSize: 32, fontWeight: "700", color: '#296EB4'}}>Encor<Text style={{fontWeight: '700', color: '#FDB833'}}>Ed</Text></Text>
-            },
-            headerTitleAlign:"center",
             headerTitleStyle: {
                 fontWeight: 'bold',
-            },
-            headerLeft: () => {
-                return <Image style={{width: 48, height: 48, marginLeft: 16}} source={require('../images/Logo.png')} />
+                color: '#F9F9FF',
+                padding: 8
             },
             headerRight: () => {
-                return <IconButton onPress={() => navigation.navigate('Profile')} style={{marginRight: 16}} icon={() => <Icon size={36} name="user-circle-o" />} />
+                return <IconButton style={{backgroundColor: '#F9F9FF', marginRight: 24}} onPress={() => {Alert.alert("Notification", "WIP")}} icon={() => <IconFeather color="#FDB833" size={24} name="bell" />} />
             },
             headerStyle: {
                 backgroundColor: "#45A1FD",
@@ -42,27 +41,55 @@ const DashboardStack = () => {
                 else if (route.name === "Subject") iconName = 'book'
                 else if (route.name === "Map") iconName = 'map'
                 else if (route.name === "Event") iconName = 'calendar'
-                else if (route.name === "Groups") iconName = 'users'
+                else if (route.name === "Profile") iconName = 'user'
 
                 return <IconFeather size={28} name={iconName} color={color} />
             },
-            tabBarActiveTintColor: '#F9F9FF',
-            tabBarActiveBackgroundColor: '#A9C5E1',
-            tabBarInactiveTintColor: '#A9C5E1',
+            tabBarActiveTintColor: '#296EB4',
+            tabBarActiveBackgroundColor: '#A2D0FE',
+            tabBarInactiveTintColor: '#F9F9FF',
             tabBarLabelStyle: {
                 fontWeight: 'bold'
             },
             tabBarStyle: {
                 height: 64,
-                backgroundColor: '#548BC3'
+                backgroundColor: '#296EB4'
             },
-        })}
-        >
+        })}>
             <Tab.Screen name="Home" component={Dashboard}/>
             <Tab.Screen name="Subject" component={Subject}/>
-            <Tab.Screen name="Map" component={Map}/>
+            <Tab.Screen
+            options={{
+                headerShown: true,
+                headerTitle: () => (
+                    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 8}}>
+                        <Text
+                        style={{
+                            fontWeight: 'bold',
+                            color: '#F9F9FF',
+                            padding: 8,
+                            fontSize: 18,
+                            marginTop: 8
+                        }}>
+                            Room
+                        </Text>
+                        <TextInput
+                        placeholder="Room Name"
+                        placeholderTextColor='#7FA8D2'
+                        outlineColor="#FFFFFF"
+                        activeOutlineColor="#296EB4"
+                        textColor="#548BC3"
+                        mode="outlined"
+
+                        style={{backgroundColor: '#FFFFFF', width: 192,}} />
+                    </View>
+                ),
+                headerRight: () => (<View></View>)
+            }}
+            name="Map"
+            component={Map}/>
             <Tab.Screen name="Event" component={Event}/>
-            <Tab.Screen name="Groups" component={Group}/>
+            <Tab.Screen name="Profile" component={Profile}/>
         </Tab.Navigator>
     )
 }

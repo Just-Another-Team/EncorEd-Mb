@@ -12,12 +12,12 @@ const Profile = () => {
             <View style={{padding: 16, zIndex: 1, marginTop: -176}}>
                 <View style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18}}>
                     <Avatar.Image size={224} source={require('../../images/profilepic.png')} />
-                    <Text style={{color: '#296EB4', fontSize: 32, fontWeight: '700', textAlign: 'center', marginBottom: 8}}>Full name</Text>
+                    <Text style={{color: '#296EB4', fontSize: 32, fontWeight: '700', textAlign: 'center'}}>Full name</Text>
                 
                     <Button mode='contained' onPress={() => navigate("Login")} style={{backgroundColor: '#EB002B'}}>LOGOUT</Button>
                 </View>
 
-                <View style={{gap: 16, backgroundColor: '#F9F9FF', borderRadius: 8, padding: 16, marginTop: 8, marginBottom: 8}}>
+                <View style={{gap: 16, backgroundColor: '#F9F9FF', borderRadius: 8, padding: 16, marginTop: 24, marginBottom: 8}}>
                     <Text style={{color: '#1F1F29', fontSize: 24, fontWeight: '700', marginBottom: 4}}>Details</Text>
 
                     <View>

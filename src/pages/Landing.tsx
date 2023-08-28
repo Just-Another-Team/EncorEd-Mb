@@ -14,14 +14,11 @@ const Landing = () => {
     return(
         <View style={styles.container}>
             <Image
-            source={require('../images/Logo.png')}
-            style={{
-                width: 200,
-                height: 200
-            }}/>
-            <Text style={[styles.centerText, styles.title]}>Encor<Text style={{color: '#FDB833'}}>Ed</Text></Text>
-            <Text style={[styles.centerText, styles.h1]}>Experience Campus Life like never before!</Text>
-            <Text style={[styles.centerText, styles.p]}>Register now and experience the ultimate campus life with EncorEd!</Text>
+            source={require('../images/landingpagepic.png')}
+            />
+
+            <Text style={[styles.centerText, styles.h2]}>Your Smart Campus Guide</Text>
+            <Text style={[styles.centerText, styles.p]}>Register now and experience of navigating campus with EncorEd</Text>
         
             <View 
             style={{
@@ -31,22 +28,14 @@ const Landing = () => {
             }}>
                 <Button
                 mode="contained"
-                buttonColor="#FFFFFF"
-                textColor="#296EB4"
+                buttonColor="#296EB4"
+                textColor="#FFFFFF"
                 onPress={() => navigation.navigate("Login")}
                 labelStyle={{fontSize: 16, fontWeight: 'bold'}}
                 style={{padding: 6, borderRadius: 128}}>
                     SIGN IN
                 </Button>
 
-                <Button
-                mode="outlined"
-                textColor="#FFFFFF"
-                labelStyle={{fontSize: 16, fontWeight: 'bold'}}
-                onPress={() => navigation.navigate("Register")}
-                style={{borderColor: '#FFFFFF', borderWidth: 1.5, padding: 6, borderRadius: 128}}>
-                    SIGN UP
-                </Button>
             </View>
         
         </View>
@@ -56,17 +45,22 @@ const Landing = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        gap: 12,
         alignItems: 'center',
         justifyContent: 'center', 
-        backgroundColor: "#5BA4ED",
+        backgroundColor: "#FFFFFF",
         padding: 28
     },
     centerText: {
-        textAlign: 'center'
+        textAlign: 'center',
+        color: '#45A1FD'
     },
     h1: {
         fontSize: 48,
+        fontWeight: 'bold',
+        fontFamily: 'Inter'
+    },
+    h2: {
+        fontSize: 40,
         fontWeight: 'bold',
         fontFamily: 'Inter'
     },
@@ -76,7 +70,7 @@ const styles = StyleSheet.create({
         color: '#296EB4'
     },
     p: {
-        fontSize: 20,
+        fontSize: 24,
     }
 })
 

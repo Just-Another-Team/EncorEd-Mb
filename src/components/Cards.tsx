@@ -4,15 +4,16 @@ import {Text} from 'react-native-paper'
 
 type CardProps = {
     image: ImageSourcePropType;
+    key?: any | unknown;
     onPress?: ((event: GestureResponderEvent) => void) | undefined;
     text?: string; //Uhm, yeah no
     width?: number;
     children?: React.ReactNode
 }
 
-const ImageCard: React.FC<CardProps> = ({image, onPress, width}: CardProps) => {
+const ImageCard: React.FC<CardProps> = ({image, key, onPress, width}: CardProps) => {
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity key={key} onPress={onPress}>
             <View
             style={[cardStyle.card, cardStyle.cardBorders, {height: 180, width: width, flex: 1}]}>
                 <Image
@@ -58,27 +59,31 @@ const HeaderCard: React.FC<CardProps> = ({image, onPress, text}: CardProps) => {
     )
 }
 
-const SubjectCard = ({title, key, edpCode, schedule}:any) => {
+const SubjectCard = ({title, onPress, key, edpCode, schedule}:any) => {
     return(
-        <View key={key} style={{backgroundColor: "#FAFAFA", padding: 16, gap: 8, borderRadius: 8}}>
-            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}> 
-                <Text style={{color: '#000000', fontSize: 16, fontWeight: '700'}}>{title}</Text>
-                <Text style={{color: '#000000', fontSize: 16}}>{edpCode}</Text>
+        <TouchableOpacity onPress={onPress}>
+            <View key={key} style={{backgroundColor: "#FAFAFA", padding: 16, gap: 8, borderRadius: 8}}>
+                <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}> 
+                    <Text variant='titleLarge'>{title}</Text>
+                    <Text>{edpCode}</Text>
+                </View>
+                <Text>{schedule}</Text>
             </View>
-            <Text style={{color: '#000000', fontSize: 16}}>{schedule}</Text>
-        </View>
+        </TouchableOpacity>
     )   
 }
 
-const EventCard = ({title, key, date, schedule}:any) => {
+const EventCard = ({title, onPress, key, date, schedule}:any) => {
     return(
-        <View key={key} style={{backgroundColor: "#FAFAFA", padding: 16, gap: 8, borderRadius: 8}}>
-            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}> 
-                <Text style={{color: '#000000', fontSize: 16, fontWeight: '700'}}>{title}</Text>
+        <TouchableOpacity onPress={onPress}>
+            <View key={key} style={{backgroundColor: "#FAFAFA", padding: 16, gap: 8, borderRadius: 8}}>
+                <Text variant='titleLarge'>{title}</Text>
+                <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}> 
+                    <Text>{date}</Text>
+                    <Text>{schedule}</Text>   
+                </View>
             </View>
-            <Text style={{color: '#000000', fontSize: 16}}>{date}</Text>
-            <Text style={{color: '#000000', fontSize: 16}}>{schedule}</Text>
-        </View>
+        </TouchableOpacity>
     )   
 }
 

@@ -21,27 +21,55 @@ const AuthStack = () => {
         screenOptions={{
             headerShown: false,
             contentStyle: {
-                backgroundColor: '#5BA4ED'
+                backgroundColor: '#FBFBFB'
             }
         }}
         initialRouteName='Landing'>
 
             <Stack.Screen 
-            name='Landing' 
+            name='Landing'
+            options={{
+                headerShown: true,
+                headerTitle: () => {
+                    return (
+                        <View style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 16,
+                            padding: 4
+                        }}>
+                            <Image
+                            source={require('../images/Logo.png')}
+                            style={{
+                                width: 64,
+                                height: 64
+                            }}/>
+                            <Text style={{fontSize: 32, fontWeight: "700", color: '#296EB4'}}>Encor<Text style={{fontWeight: '700', color: '#FDB833'}}>Ed</Text></Text>
+                        </View>
+                    )
+                },
+                contentStyle: {
+                    justifyContent: 'center',
+                },
+                headerTitleAlign: 'center',
+                headerShadowVisible: false
+            }}
             component={Landing} />
 
             <Stack.Screen 
-            name='Login' 
+            name='Login'
             component={Login} />
 
             <Stack.Screen 
             name="Register"
             component={RegisterPage}/>
 
-            {/* Must be in another stack navigator*/}
             <Stack.Screen
             name="LoggedIn"
             component={DashboardStack}/>
+
+            {/* Log in as Guest */}
 
             <Stack.Screen name="SelectedItem" component={SelectedItem} options={{
                 headerStyle: {
@@ -51,33 +79,6 @@ const AuthStack = () => {
                     backgroundColor: '#FFFFFF'
                 }
             }}/>
-
-            <Stack.Screen
-            name="Profile"
-            options={{
-                headerShown: false,
-                headerTitle: () => {
-                    return <Text style={{fontSize: 32, fontWeight: "700", color: '#296EB4', padding: 14}}>Encor<Text style={{fontWeight: '700', color: '#FDB833'}}>Ed</Text></Text>
-                },
-                headerTitleAlign:"center",
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
-                headerBackVisible: false,
-                headerLeft: () => {
-                    return <Image style={{width: 48, height: 48}} source={require('../images/Logo.png')} />
-                },
-                headerRight: () => {
-                    return <IconButton onPress={() => navigation.navigate("Profile")} icon={() => <Icon size={36} name="user-circle-o" />} />
-                },
-                headerStyle: {
-                    backgroundColor: "#45A1FD",
-                },
-                contentStyle: {
-                    backgroundColor: '#F6F5FF'
-                }
-            }}
-            component={Profile}/>
 
         </Stack.Navigator>
     )

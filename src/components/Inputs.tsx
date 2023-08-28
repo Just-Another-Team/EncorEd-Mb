@@ -18,6 +18,7 @@ const Input: React.FC<TextInputProps> = ({ label, onPressIn, control = undefined
             control={control}
             name={name}
             rules={rules}
+            defaultValue=""
             render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
                 <View>
                     <TextInput

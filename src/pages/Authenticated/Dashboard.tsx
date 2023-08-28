@@ -27,8 +27,8 @@ const Dashboard = () => {
                 onPressIn={() => {}}/>
 
                 <ScrollView horizontal contentContainerStyle={{gap: 12}}>
-                    <Chip style={{backgroundColor: '#548BC3'}} textStyle={{color: '#A2D0FE'}}>Room 217</Chip>
-                    <Chip style={{backgroundColor: '#548BC3'}} textStyle={{color: '#A2D0FE'}}>Room 218</Chip>
+                    <Chip onPress={() => {navigate('Map')}} rippleColor='#74B8FD' style={{backgroundColor: '#548BC3'}} textStyle={{color: '#A2D0FE'}}>Room 217</Chip>
+                    <Chip onPress={() => {}} style={{backgroundColor: '#548BC3'}} textStyle={{color: '#A2D0FE'}}>Room 218</Chip>
                 </ScrollView>
             </View>
 

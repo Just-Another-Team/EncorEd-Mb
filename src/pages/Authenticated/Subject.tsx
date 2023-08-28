@@ -8,12 +8,10 @@ import { navigate } from '../../navigators/RootNavigation'
 const Subject = () => {
     return(
         <ScrollView contentContainerStyle={{paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10}}>
-            <Text style={{color: '#FDB833', fontSize: 32, fontWeight: '700', marginTop: 10, marginBottom: 10}}>Subjects</Text>
-
                 <View style={{backgroundColor: '#F9F9FF', borderRadius: 8, padding: 16, marginTop: 10, marginBottom: 10, gap: 12}}>
                     <Text variant='titleLarge' style={{color: '#296EB4', fontWeight: '700', }}>Current Subject</Text>
                     
-                    <HeaderCard text='AHHHHHHHHHHHHHHHHHHHHH' image={SubjectImage} onPress={() => navigate('SelectedItem')} />
+                    <HeaderCard text='SUBJECT 1' image={SubjectImage} onPress={() => navigate('SelectedItem')} />
 
                     <View style={{display: 'flex', flexDirection: 'row'}}>
                         <Text variant='bodyLarge' style={{fontWeight: '700', flex: 1}}>Room</Text>
@@ -35,8 +33,10 @@ const Subject = () => {
             <View style={{backgroundColor: '#F9F9FF', borderRadius: 8, padding: 16, marginTop: 10, marginBottom: 10, gap: 12}}>
                 <Text style={{color: '#296EB4', fontSize: 20, fontWeight: '700', }}>Subjects</Text>
                 
-                <ScrollView horizontal style={{borderWidth: 1}} contentContainerStyle={{gap: 12, flexGrow: 1}}>
-                    <ImageCard onPress={() => Alert.alert("To the selected page")} image={SubjectImage} />
+                <ScrollView horizontal contentContainerStyle={{gap: 12, flexGrow: 1}}>
+                    {Array.from({length: 3}).map((el) => (
+                        <ImageCard key={el} width={256} onPress={() => navigate('SelectedItem')} image={SubjectImage} />
+                    ))}
                 </ScrollView>
 
             </View>

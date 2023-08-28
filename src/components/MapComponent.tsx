@@ -37,17 +37,20 @@ const CampusMap = ({centerCoordinate, zoom, filter, onPress, floor}: CampusMapPr
       centerCoordinate={centerCoordinate}
       /> 
 
-      <Secondfloor floor={floor} onPress={onPress}/>
-      <Mezzanine floor={floor} onPress={onPress} />
-      <Upperfloor floor={floor} onPress={onPress}/>
-      <Ground floor={floor} onPress={onPress}/>
-      <Basement floor={floor} onPress={onPress}/>
+      <Secondfloor floor={floor} filter={filter} onPress={onPress}/>
+      <Mezzanine floor={floor} filter={filter} onPress={onPress} />
+      
+      <Upperfloor floor={floor} filter={filter} onPress={onPress}/>
+
+      <Ground floor={floor} filter={filter} onPress={onPress}/>
+
+      <Basement floor={floor} filter={filter} onPress={onPress}/>
 
     </MapView>
   )
 }
 
-const Basement = ({floor, onPress}:any) => {
+const Basement = ({floor, onPress, filter}:any) => {
   return(
     <>
       <VectorSource
@@ -81,12 +84,24 @@ const Basement = ({floor, onPress}:any) => {
         }}
         />
 
+        <FillLayer
+        id='basement_rooms_fl_filter'
+        sourceID='Basement_rooms_vs'
+        sourceLayerID='Basement_rooms'
+        aboveLayerID='basement_rooms_fl'
+        filter={filter}
+        style={{
+          visibility: floor === 'B' ? 'visible' : 'none',
+          fillColor: "#ffa8a8"
+        }}
+        />
+
       </VectorSource>
     </>
   )
 }
 
-const Ground = ({floor, onPress}:any) => {
+const Ground = ({floor, onPress, filter}:any) => {
   return(
     <>
       <VectorSource
@@ -120,6 +135,18 @@ const Ground = ({floor, onPress}:any) => {
         }}
         />
 
+        <FillLayer
+        id='ground_rooms_fl_filter'
+        sourceID='Ground_rooms_vs'
+        sourceLayerID='Ground_rooms'
+        aboveLayerID='ground_rooms_fl'
+        filter={filter}
+        style={{
+          visibility: floor === 'G' ? 'visible' : 'none',
+          fillColor: "#f7c081"
+        }}
+        />
+
       </VectorSource>
     </>
   )
@@ -146,7 +173,7 @@ const Upperfloor = ({floor}:any) => {
   )
 }
 
-const Mezzanine = ({floor, onPress}: any) => {
+const Mezzanine = ({floor, onPress, filter}: any) => {
   return(
     <>
       <VectorSource
@@ -165,12 +192,24 @@ const Mezzanine = ({floor, onPress}: any) => {
         }}
         />
 
+        <FillLayer
+        id='Mezzanine_rooms_fl_filter'
+        sourceID='Mezzanine_rooms_vs'
+        sourceLayerID='Mezzanine_rooms'
+        aboveLayerID='Mezzanine_rooms_fl'
+        filter={filter}
+        style={{
+          visibility: floor === 'M' ? 'visible' : 'none',
+          fillColor: "#edff73"
+        }}
+        />
+
       </VectorSource>
     </>
   )
 }
 
-const Secondfloor = ({floor, onPress}: any) => {
+const Secondfloor = ({floor, onPress, filter}: any) => {
   return(
     <>
       <VectorSource
@@ -186,6 +225,18 @@ const Secondfloor = ({floor, onPress}: any) => {
         style={{
           visibility: floor === '2' ? 'visible' : 'none',
           fillColor: "#7ae03f"
+        }}
+        />
+
+        <FillLayer
+        id='Secondfloor_rooms_fl_filter'
+        sourceID='Secondfloor_rooms_vs'
+        sourceLayerID='Secondfloor_rooms'
+        aboveLayerID='Secondfloor_rooms_fl'
+        filter={filter}
+        style={{
+          visibility: floor === '2' ? 'visible' : 'none',
+          fillColor: "#abff7a"
         }}
         />
 

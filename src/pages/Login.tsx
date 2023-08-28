@@ -5,6 +5,7 @@ import {
     Text,
     StyleSheet,
     Image,
+    Alert,
 } from 'react-native'
 import {
     Button,
@@ -19,17 +20,17 @@ import { ScrollView } from "react-native"
 import { Logo } from "../types/images"
 
 const Login = () => {
+    const defaultVal = {
+        email: '',
+        password: ''
+    }
+
     const { 
         control,
         reset,
         handleSubmit,
-        formState: {errors}
+        formState: {errors},
     } = useForm()
-
-    const defaultValues = {
-        email: "",
-        password: ""
-    }
 
     const inputs:TextInputProps[] = [
         {id: "email", placeHolder: "Email", textContentType: 'emailAddress', secureEntryText: false, icon: "mail"},
@@ -44,20 +45,29 @@ const Login = () => {
     const authenticationHandler = (data: object) => {
         console.log(data)
 
-        reset({defaultValues})
+        reset(defaultVal)
         navigation.navigate("LoggedIn")
     }
 
     return(
-        <ScrollView style={{padding: 28}}>
+        <ScrollView style={{paddingTop: 36, paddingBottom: 36, paddingLeft: 20, paddingRight: 20}}>
             <View style={styles.container}>
-                <Image
-                source={Logo}
-                style={{
-                    width: 200,
-                    height: 200
-                }}/>
-                <Text style={[styles.centerText, styles.title]}>Encor<Text style={{color: '#FDB833'}}>Ed</Text></Text>
+
+                <View style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 16,
+                    padding: 4,
+                }}>
+                    <Image
+                    source={require('../images/Logo.png')}
+                    style={{
+                        width: 72,
+                        height: 72
+                    }}/>
+                    <Text style={{fontSize: 36, fontWeight: "700", color: '#296EB4'}}>Encor<Text style={{fontWeight: '700', color: '#FDB833'}}>Ed</Text></Text>
+                </View>
             
                 <View style={styles.loginContainer}>
                     <Text style={[styles.h5, styles.centerText, styles.textPrimary]}>Login Account</Text>         
@@ -88,7 +98,17 @@ const Login = () => {
                     </Button>
                 </View>
 
-                <Text style={styles.p}>Don't have an account? <Text onPress={() => navigation.navigate("Register")} style={{color: '#FDB833', fontWeight: 'bold'}}>SIGN UP</Text></Text>
+                <View style={{width: '100%', padding: 24}}>
+                    <Text style={[styles.p, {fontSize: 20, textAlign: 'center'}]}>Don't have an account?</Text>
+                    <Button
+                        mode="outlined"
+                        textColor="#296EB4"
+                        labelStyle={{fontSize: 16, fontWeight: 'bold'}}
+                        style={{padding: 6, borderColor: '#296EB4', borderRadius: 128, marginTop: 10}}
+                        onPress={() => {Alert.alert("WIP", "This feature is still work in progress")}}>
+                            SIGN IN AS GUEST
+                    </Button>
+                </View>
             </View>
         </ScrollView>
     )
@@ -99,7 +119,8 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 12,
         alignItems: 'center',
-        justifyContent: 'center', 
+        justifyContent: 'center',
+        paddingTop: 32
     },
     loginContainer: {
         backgroundColor: '#A2D0FE',
@@ -107,7 +128,8 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         display: 'flex',
         gap: 16,
-        marginTop: 32,
+        marginTop: 48,
+        marginBottom: 32,
         padding: 24
     },
     centerText: {
@@ -140,6 +162,7 @@ const styles = StyleSheet.create({
     },
     p: {
         fontSize: 18,
+        color: '#296EB4'
     },
     textPrimary: {
         color: '#296EB4'

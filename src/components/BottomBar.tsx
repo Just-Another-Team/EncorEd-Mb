@@ -1,11 +1,19 @@
-import React from 'react'
-import {Text, View, Modal, StyleSheet, Dimensions, ScrollView} from 'react-native'
-import { Button } from 'react-native-paper'
+import React, { useState } from 'react'
+import {View, Modal, StyleSheet, Dimensions, ScrollView, Alert} from 'react-native'
+import { Button, Text } from 'react-native-paper'
 import { styles } from '../styles'
+import { EventCard, SubjectCard } from './Cards'
 
-const RoomInformation = ({showModal, onRequestClose}:any) => {
+enum SelectedSchedList {
+    Subject = 'subject',
+    Event = 'event'
+}
+
+const RoomInformation = ({showModal, roomTitle, onCardPress, onRequestClose}:any) => {
 
     const windowHeight = Dimensions.get('window').height
+
+    const [selectedList, setSelectedList] = useState(SelectedSchedList.Subject)
 
     return(
         <Modal
@@ -15,31 +23,42 @@ const RoomInformation = ({showModal, onRequestClose}:any) => {
         visible={showModal}>
             <View style={[modalStyle.bottomSheet, {height: windowHeight * 0.6, gap: 8}]}>
                 <View>
-                    <Text style={[styles.h1, modalStyle.headingText]}>ROOM TITLE</Text>
-                    <Text style={{color: "#000000"}}>Managed By: <Text>Manager</Text></Text>
+                    <Text variant='headlineLarge' style={{fontWeight: '700'}}>{roomTitle}</Text>
+                    <Text variant='bodyLarge'>Managed By: <Text style={{fontWeight: '700'}}>Manager</Text></Text>
                 </View>
 
                 <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <Button style={{flex: 1}} mode="contained">Subject</Button>
-                    <Button style={{flex: 1}} mode="outlined">Event</Button>
+                    <Button
+                    key="subject"
+                    onPress={() => {setSelectedList(SelectedSchedList.Subject)}}
+                    style={{flex: 1}}
+                    mode={selectedList !== SelectedSchedList.Subject ? "text" : "contained"}>
+                        Subject
+                    </Button>
+
+                    <Button
+                    key="event"
+                    onPress={() => {setSelectedList(SelectedSchedList.Event)}}
+                    style={{flex: 1}}
+                    mode={selectedList !== SelectedSchedList.Event ? "text" : "contained"}>
+                        Event
+                    </Button>
                 </View>
 
                 <ScrollView contentContainerStyle={{gap: 12}}>
 
-                    {Array.from({length: 7}).map(el => (
-                        <View style={{backgroundColor: "#FAFAFA", padding: 16, gap: 8, borderRadius: 8}}>
-                            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}> 
-                                <Text style={{color: '#000000', fontSize: 16, fontWeight: '700'}}>SUBJECT TITLE</Text>
-                                <Text style={{color: '#000000', fontSize: 16}}>EDP Code</Text>
-                            </View>
-                            <Text style={{color: '#000000', fontSize: 16}}>00:00am - 00:00pm</Text>
-                        </View>
-                    ))}
+                    {selectedList === SelectedSchedList.Subject && (
+                        <SubjectCard onPress={onCardPress} title="Subject Title" edpCode="12345" schedule="7:30 am - 11:30 am" />
+                    )}
+
+                    {selectedList === SelectedSchedList.Event && (
+                        <EventCard onPress={onCardPress} title='Event Title' date='January 12, 2023' schedule="7:30 am - 11:30 am" />
+                    )}
 
                 </ScrollView>
 
                 <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <Button style={{flex: 1}} mode="contained">NAVIGATE</Button>
+                    <Button buttonColor='#296EB4' style={{flex: 1}} onPress={() => {Alert.alert("Work in progress")}} mode="contained">NAVIGATE</Button>
                 </View>
             </View>
         </Modal>

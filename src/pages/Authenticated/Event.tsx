@@ -8,13 +8,11 @@ import { navigate } from '../../navigators/RootNavigation'
 
 const Event = () => {
     return(
-        <ScrollView contentContainerStyle={{paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10}}>
-            <Text style={{color: '#FDB833', fontSize: 32, fontWeight: '700', marginBottom: 8}}>Events</Text>
-            
+        <ScrollView contentContainerStyle={{paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10}}>         
             <View style={{backgroundColor: '#F9F9FF', borderRadius: 8, padding: 16, marginTop: 8, marginBottom: 8, gap: 12}}>
                 <Text style={{color: '#296EB4', fontSize: 20, fontWeight: '700'}}>Upcoming Event</Text>
                 
-                <HeaderCard text='AHHHHHHHHHHH' image={EventImage} onPress={() => navigate('SelectedItem')} />
+                <HeaderCard text='EVENT 1' image={EventImage} onPress={() => navigate('SelectedItem')} />
                 
                 <View style={{display: 'flex', flexDirection: 'row'}}>
                     <Text variant='bodyLarge' style={{fontWeight: '700', flex: 1}}>Location</Text>
