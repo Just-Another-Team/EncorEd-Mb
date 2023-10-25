@@ -5,6 +5,7 @@ export type AuthStackParamList = {
     Login: undefined;
     Register: undefined;
     LoggedIn: undefined; //Needs parameters because Authentication
+    EditProfile: undefined
     // Profile: undefined;
     // Dashboard: undefined; //Needs parameters because authentication!
 }

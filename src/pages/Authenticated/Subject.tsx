@@ -34,8 +34,8 @@ const Subject = () => {
                 <Text style={{color: '#296EB4', fontSize: 20, fontWeight: '700', }}>Subjects</Text>
                 
                 <ScrollView horizontal contentContainerStyle={{gap: 12, flexGrow: 1}}>
-                    {Array.from({length: 3}).map((el) => (
-                        <ImageCard key={el} width={256} onPress={() => navigate('SelectedItem')} image={SubjectImage} />
+                    {Array.from({length: 3}).map((el, ind) => (
+                        <ImageCard key={ind} width={256} onPress={() => navigate('SelectedItem')} image={SubjectImage} />
                     ))}
                 </ScrollView>
 

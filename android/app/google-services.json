@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "408443509099",
+    "project_id": "encored-bd6f8",
+    "storage_bucket": "encored-bd6f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408443509099:android:8cfa5561014fe9f6f0942e",
+        "android_client_info": {
+          "package_name": "com.encoredmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408443509099-h7nck5r70qi62fggiin971n51040gg5e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNc-cHYOx_e7-dUiuhv4jEu747HzcAtmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408443509099-h7nck5r70qi62fggiin971n51040gg5e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

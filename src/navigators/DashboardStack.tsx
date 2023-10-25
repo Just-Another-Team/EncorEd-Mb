@@ -45,15 +45,15 @@ const DashboardStack = () => {
 
                 return <IconFeather size={28} name={iconName} color={color} />
             },
-            tabBarActiveTintColor: '#296EB4',
-            tabBarActiveBackgroundColor: '#A2D0FE',
+            tabBarActiveTintColor: '#F9F9FF',
+            tabBarActiveBackgroundColor: '#6DB6FD',
             tabBarInactiveTintColor: '#F9F9FF',
             tabBarLabelStyle: {
                 fontWeight: 'bold'
             },
             tabBarStyle: {
                 height: 64,
-                backgroundColor: '#296EB4'
+                backgroundColor: '#45A3FD'
             },
         })}>
             <Tab.Screen name="Home" component={Dashboard}/>
@@ -61,15 +61,24 @@ const DashboardStack = () => {
             <Tab.Screen
             options={{
                 headerShown: true,
+                headerTitleContainerStyle: {
+                    backgroundColor: '#45A1FD',
+                },
                 headerTitle: () => (
-                    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 8}}>
+                    <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 8,
+                    }}>
                         <Text
                         style={{
                             fontWeight: 'bold',
                             color: '#F9F9FF',
                             padding: 8,
                             fontSize: 18,
-                            marginTop: 8
+                            // marginTop: 8,
                         }}>
                             Room
                         </Text>
@@ -81,7 +90,12 @@ const DashboardStack = () => {
                         textColor="#548BC3"
                         mode="outlined"
 
-                        style={{backgroundColor: '#FFFFFF', width: 192,}} />
+                        dense={true}
+
+                        style={{
+                            width: 192,
+                        }} 
+                        />
                     </View>
                 ),
                 headerRight: () => (<View></View>)

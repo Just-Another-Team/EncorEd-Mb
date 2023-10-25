@@ -11,6 +11,7 @@ import DashboardStack from "./DashboardStack";
 import Profile from "../pages/Authenticated/Profile";
 import DrawerStack from "./DrawerStack";
 import SelectedItem from "../pages/Authenticated/SelectedItem";
+import EditProfile from "../pages/EditProfile";
 
 
 const AuthStack = () => {
@@ -70,6 +71,9 @@ const AuthStack = () => {
             component={DashboardStack}/>
 
             {/* Log in as Guest */}
+            <Stack.Screen
+            name="EditProfile"
+            component={EditProfile}/>
 
             <Stack.Screen name="SelectedItem" component={SelectedItem} options={{
                 headerStyle: {

@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
     h2: {
         fontSize: 40,
-        fontWeight: 'bold',
+        fontWeight: '700',
         fontFamily: 'Inter'
     },
     title: {

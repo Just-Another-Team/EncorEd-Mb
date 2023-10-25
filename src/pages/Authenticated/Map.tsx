@@ -40,6 +40,7 @@ const Map = () => {
 
     const handleCloseSelectedRoom = () => {
         setShowModal(false)
+        
         setClickInfo({
             longitude: 0,
             latitude: 0,

@@ -8,45 +8,97 @@ import {
     Alert,
 } from 'react-native'
 import {
+    ActivityIndicator,
     Button,
+    MD2Colors,
     TextInput
 } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/AntDesign'
 import * as navigation from '../navigators/RootNavigation'
-import {useForm} from 'react-hook-form'
-import { TextInputProps } from "../types/input"
+import {SubmitHandler, useForm} from 'react-hook-form'
+import { Credentials, TextInputProps } from "../types/input"
 import { Input } from "../components/Inputs"
 import { ScrollView } from "react-native"
 import { Logo } from "../types/images"
+import { getUser, signIn } from "../app/features/auth/authSlice"
+import { useAppDispatch, useAppSelector } from "../app/encored-redux-hooks"
+import { getInstitution } from "../app/features/institution/institutionSlice"
+import { getRole } from "../app/features/role/roleSlice"
 
 const Login = () => {
-    const defaultVal = {
-        email: '',
-        password: ''
-    }
+    const logindispatch = useAppDispatch();
+
+    const userLoading = useAppSelector(state => state.authentication.loading)
+    const roleLoading = useAppSelector(state => state.role.loading)
+    const institutionLoading = useAppSelector(state => state.institution.loading)
 
     const { 
         control,
         reset,
         handleSubmit,
         formState: {errors},
-    } = useForm()
+        setError,
+        watch
+    } = useForm({
+        defaultValues: {
+            emailUserName: '',
+            password: ''
+        }
+    })
 
     const inputs:TextInputProps[] = [
-        {id: "email", placeHolder: "Email", textContentType: 'emailAddress', secureEntryText: false, icon: "mail"},
-        {id: "password", placeHolder: "Password", textContentType: 'password', secureEntryText: true, icon: "lock"},
+        {id: "emailUserName", placeHolder: "Email", textContentType: 'emailAddress', secureEntryText: false, icon: "mail", formError: errors.emailUserName},
+        {id: "password", placeHolder: "Password", textContentType: 'password', secureEntryText: true, icon: "lock", formError: errors.password},
     ]
 
-    const errorHandler = (el: TextInputProps) => {
-        if (el.id === "email") return "Email is required!";
+    const requiredErrorHandler = (el: TextInputProps) => {
+        if (el.id === "emailUserName") return "Email is required!";
         if (el.id === "password") return "Password is required!"
     }
 
-    const authenticationHandler = (data: object) => {
-        console.log(data)
+    const authenticationHandler:SubmitHandler<{emailUserName: string; password: string}> = (data) => {
 
-        reset(defaultVal)
-        navigation.navigate("LoggedIn")
+        const userCredentials: Credentials = {
+            email: data.emailUserName,
+            password: data.password
+        }
+        console.log("Data Logged In", userCredentials)
+
+        //GET USER
+        logindispatch(getUser(userCredentials.email)).unwrap()
+            .then((getUserRes) => {
+                return logindispatch(signIn(userCredentials)).unwrap()
+                    .then(() => {
+                        //Get Institution
+                        return logindispatch(getInstitution(getUserRes.institution)).catch(error => Promise.reject(error))
+                    })
+                    .then(() => {
+                        //Get Role
+                        return logindispatch(getRole(getUserRes.id)).catch(error => Promise.reject(error)).catch(error => Promise.reject(error))
+                    })
+                    .then(() => {
+                        navigation.navigate("LoggedIn")
+                        reset();
+                    })
+                    .catch((error) => Promise.reject(error))
+            })
+            .catch((error) => {
+                if (error.code === "ERR_BAD_REQUEST" && error.response.data.code === "firestore/missing-email") setError("emailUserName", {message: "Email not found in the system's database. Please register"})
+
+                if (error.code === 'auth/missing-email') setError("emailUserName", {message: "Email not found in the system's database. Please register"})
+
+                if (error.code === "auth/network-request-failed") setError("emailUserName", {message: "Cannot log in. Please check your internet connection."})
+
+                if (error.code === "ERR_NETWORK") setError("emailUserName", {message: `${error.message}.`})
+
+                if (error.code === "auth/too-many-requests") setError("emailUserName", {message: `${error.message}.`})
+
+                if (error.code === "auth/user-invalid-role") setError("emailUserName", {message: "User does not contain the level of authentication needed to use the web"})
+
+                if (error.code === "auth/user-not-found" || error.code === "auth/invalid-email") setError("emailUserName", {message: "Invalid email"})
+
+                if (error.code === "auth/wrong-password") setError("password", {message: "Invalid password"})
+            })
     }
 
     return(
@@ -66,7 +118,19 @@ const Login = () => {
                         width: 72,
                         height: 72
                     }}/>
-                    <Text style={{fontSize: 36, fontWeight: "700", color: '#296EB4'}}>Encor<Text style={{fontWeight: '700', color: '#FDB833'}}>Ed</Text></Text>
+                    <Text
+                    style={{
+                        fontSize: 36,
+                        fontWeight: "700",
+                        color: '#296EB4',
+                    }}>
+                        Encor
+                        <Text
+                        style={{
+                            fontWeight: '700',
+                            color: '#FDB833'
+                        }}>Ed</Text>
+                    </Text>
                 </View>
             
                 <View style={styles.loginContainer}>
@@ -81,8 +145,13 @@ const Login = () => {
                         textContentType={el.textContentType}
                         control={control}
                         icon={el.icon}
+
+                        formError={el.formError}
+
+                        watch={watch}
+
                         rules={{
-                            required: errorHandler(el)
+                            required: `${el.placeHolder} is required`
                         }}
                         />
                     )}
@@ -92,23 +161,14 @@ const Login = () => {
                     buttonColor="#296EB4"
                     textColor="#FDB833"
                     onPress={handleSubmit(authenticationHandler)}
-                    labelStyle={{fontSize: 16, fontWeight: 'bold'}}
-                    style={{padding: 6, borderRadius: 128, marginTop: 32}}>
-                        LOGIN
+                    loading={userLoading || roleLoading || institutionLoading}
+                    disabled={userLoading || roleLoading || institutionLoading}
+                    labelStyle={{fontSize: 18, fontWeight: 'bold'}}
+                    style={{padding: 6,borderRadius: 128, marginTop: 32}}>
+                        {userLoading || roleLoading || institutionLoading ? "LOADING" : "LOGIN"}
                     </Button>
                 </View>
 
-                <View style={{width: '100%', padding: 24}}>
-                    <Text style={[styles.p, {fontSize: 20, textAlign: 'center'}]}>Don't have an account?</Text>
-                    <Button
-                        mode="outlined"
-                        textColor="#296EB4"
-                        labelStyle={{fontSize: 16, fontWeight: 'bold'}}
-                        style={{padding: 6, borderColor: '#296EB4', borderRadius: 128, marginTop: 10}}
-                        onPress={() => {Alert.alert("WIP", "This feature is still work in progress")}}>
-                            SIGN IN AS GUEST
-                    </Button>
-                </View>
             </View>
         </ScrollView>
     )

@@ -1,53 +1,69 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Controller, useController } from 'react-hook-form';
 import {View} from 'react-native'
 import { TextInput, Text } from 'react-native-paper'
-import { Control } from 'react-hook-form'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { TextInputProps } from '../types/input';
 import { StyleSheet } from 'react-native';
 
-const Input: React.FC<TextInputProps> = ({ label, onPressIn, control = undefined, name, rules = {}, placeHolder, textContentType, secureEntryText, icon = ""}) => {
+const Input: React.FC<TextInputProps> = ({ 
+    label,
+    onPressIn,
+    control,
+    name,
+    rules = {},
+    placeHolder,
+    textContentType,
+    secureEntryText,
+    icon = "",
+    formError,
+    watch
+}) => {
+
+    // useEffect(() => {
+    //     const subscription = watch((data) => console.log(data.password));
+    //     return () => subscription.unsubscribe()
+    // }, [watch])
 
     const iconHandler = () => {
         return <Icon name={icon} size={24} style={{color: '#585667'}} color='#585667' />
     }
-
+    
     return (
         <Controller 
             control={control}
             name={name}
             rules={rules}
-            defaultValue=""
-            render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
+            render={({field: {value, onChange, onBlur}}) => (
                 <View>
                     <TextInput
-                    key={name}
-                    placeholder={placeHolder}
-                    secureTextEntry={secureEntryText}
-                    textContentType={textContentType}
+                        key={name}
+                        placeholder={placeHolder}
+                        secureTextEntry={secureEntryText}
+                        textContentType={textContentType}
 
-                    label={label}
+                        label={label}
 
-                    value={value}
-                    onChangeText={onChange}
-                    onBlur={onBlur}
+                        value={value}
+                        onChangeText={onChange}
+                        onBlur={onBlur}
 
-                    onPressIn={onPressIn}
+                        onPressIn={onPressIn}
 
-                    placeholderTextColor='#7FA8D2'
-                    outlineColor={error? inputStyle.error.color : "#FFFFFF"}
-                    activeOutlineColor={error ? inputStyle.error.color : "#296EB4"}
-                    textColor="#548BC3"
-                    mode="outlined"
+                        placeholderTextColor='#7FA8D2'
+                        outlineColor={"#FFFFFF"}
+                        activeOutlineColor={"#296EB4"}
+                        error={Boolean(formError)}
+                        textColor="#548BC3"
+                        mode="outlined"
 
-                    left={
-                        icon !== "" && <TextInput.Icon icon={iconHandler} />
-                    }
+                        //right={(name === "password") && <TextInput.Icon onPress={() => {console.log("Password Eye Pressed")}} icon={() => <Icon name='eyeo' size={24} style={{color: '#a19fb3'}} color='#a19fb3' />} />}
+                        left={ icon !== "" && <TextInput.Icon icon={iconHandler} /> }
 
-                    style={{backgroundColor: '#FFFFFF'}} />
-                    {error  && (
-                        <Text style={inputStyle.error}>{error.message || 'Error'}</Text>
+                        style={{backgroundColor: '#FFFFFF'}}
+                    />
+                    {Boolean(formError)  && (
+                        <Text style={inputStyle.error}>{formError?.message || 'Error'}</Text>
                     )}
                 </View>
             )}
