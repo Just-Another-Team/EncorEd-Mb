@@ -74,8 +74,8 @@ const Profile = () => {
                     {/* Make a type out of these objects */}
                     <View>
                         <Text style={{color: '#1F1F29', fontSize: 18, fontWeight: '700'}}>Role/s Assigned:</Text>
-                        {roles?.map((role, ind) => (
-                            <Text key={ind} style={{color: '#1F1F29', fontSize: 18,}}>{`${role._institutionalRole._name.charAt(0).toUpperCase()}${role._institutionalRole._name.slice(1)}`}</Text>
+                        {roles?.map((role: any, ind) => (
+                            <Text key={ind} style={{color: '#1F1F29', fontSize: 18,}}>{`${role.name.charAt(0).toUpperCase()}${role.name.slice(1)}`}</Text>
                         ))}
                     </View>
                 </View>

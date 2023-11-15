@@ -13,7 +13,6 @@ const initialState: RoleState = {
     error: null
 }
 
-
 export const getRole = createAsyncThunk(
     "role/get",
     async (email: string, {rejectWithValue}) => {

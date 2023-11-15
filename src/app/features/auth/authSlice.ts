@@ -7,7 +7,6 @@ import { UserType } from "../../../types/output";
 interface UserState {
     loading: boolean,
     user: UserType | undefined,
-    token: string | undefined,
     error: any
 }
 
@@ -22,18 +21,13 @@ type UserData = { //This is from register
 const initialState: UserState = {
     loading: false,
     user: undefined,
-    token: undefined,
     error: null
 }
 
 export const signIn = createAsyncThunk(
     "user/signIn",
     async (userData: Credentials, {rejectWithValue}) => {
-        try {
-            return await EncorEdAuthService.signIn(userData)
-        } catch (error) {
-            return rejectWithValue(error)
-        }
+        return await EncorEdAuthService.signIn(userData).catch(error => rejectWithValue(error))
     }
 )
 
@@ -48,14 +42,13 @@ export const getUser = createAsyncThunk(
     "user/get",
     async (email: string, {rejectWithValue}) => {
         return await EncorEdAuthService.get(email)
-            .then((res) => res.data)
             .catch((error) => rejectWithValue(error))
     }
 )
 
 export const updateUser = createAsyncThunk(
     "user/update",
-    async (data, {rejectWithValue}) => {
+    async (data: any, {rejectWithValue}) => {
         return await EncorEdAuthService.updateUser(data)
             .then((res) => res.data)
             .catch((error) => rejectWithValue(error))
@@ -65,7 +58,18 @@ export const updateUser = createAsyncThunk(
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        logIn: (state, actions: PayloadAction<UserType>) => {
+            state.loading = false
+            state.user = actions.payload
+            state.error = null
+        },
+        resetUser: (state) => {
+            state.loading = false
+            state.user = undefined
+            state.error = null
+        }
+    },
     extraReducers: builder => {
         //Signing In
         {
@@ -78,8 +82,6 @@ const authSlice = createSlice({
             })
             builder.addCase(signIn.rejected, (state, actions: PayloadAction<any>) => {
                 state.loading = false
-                state.user = undefined
-                state.token = undefined
                 state.error = actions.payload
             })
         }
@@ -93,7 +95,6 @@ const authSlice = createSlice({
             builder.addCase(logOutUser.fulfilled, (state, actions: PayloadAction<any>) => {
                 state.loading = false
                 state.user = undefined
-                state.token = undefined
                 state.error = null
             })
             builder.addCase(logOutUser.rejected, (state, actions: PayloadAction<any>) => {
@@ -110,13 +111,12 @@ const authSlice = createSlice({
             })
             builder.addCase(getUser.fulfilled, (state, actions: PayloadAction<any>) => { 
                 state.loading = false
-                state.user = actions.payload
+                // state.user = actions.payload
                 state.error = null
             })
             builder.addCase(getUser.rejected, (state, actions: PayloadAction<any>) => {
                 state.loading = false
                 state.user = undefined
-                state.token = undefined
                 state.error = actions.payload.code
             })
         }
@@ -135,7 +135,6 @@ const authSlice = createSlice({
             builder.addCase(updateUser.rejected, (state, actions: PayloadAction<any>) => {
                 state.loading = false
                 state.user = undefined
-                state.token = undefined
                 state.error = actions.payload.code
             })
         }
@@ -147,4 +146,5 @@ const authSlice = createSlice({
 // export const selectCurrentUser = (state) => state.auth.user
 // export const selectCurrentToken = (state) => state.auth.token
 // export const currentSignIn = signIn
+export const { resetUser, logIn } = authSlice.actions
 export default authSlice.reducer

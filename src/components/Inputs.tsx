@@ -50,7 +50,7 @@ const Input: React.FC<TextInputProps> = ({
 
                         onPressIn={onPressIn}
 
-                        placeholderTextColor='#7FA8D2'
+                        placeholderTextColor='#868e96'
                         outlineColor={"#FFFFFF"}
                         activeOutlineColor={"#296EB4"}
                         error={Boolean(formError)}

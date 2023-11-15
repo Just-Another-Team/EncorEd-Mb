@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import React from "react"
+import React, { useEffect } from "react"
 import {
     View,
     Text,
@@ -20,9 +20,9 @@ import { Credentials, TextInputProps } from "../types/input"
 import { Input } from "../components/Inputs"
 import { ScrollView } from "react-native"
 import { Logo } from "../types/images"
-import { getUser, signIn } from "../app/features/auth/authSlice"
+import { getUser, logIn, resetUser, signIn } from "../app/features/auth/authSlice"
 import { useAppDispatch, useAppSelector } from "../app/encored-redux-hooks"
-import { getInstitution } from "../app/features/institution/institutionSlice"
+import { getInstitution, logOutInsitution } from "../app/features/institution/institutionSlice"
 import { getRole } from "../app/features/role/roleSlice"
 
 const Login = () => {
@@ -70,19 +70,25 @@ const Login = () => {
                 return logindispatch(signIn(userCredentials)).unwrap()
                     .then(() => {
                         //Get Institution
-                        return logindispatch(getInstitution(getUserRes.institution)).catch(error => Promise.reject(error))
+                        return logindispatch(getInstitution(getUserRes.data.institution)).catch(error => Promise.reject(error))
                     })
                     .then(() => {
                         //Get Role
-                        return logindispatch(getRole(getUserRes.id)).catch(error => Promise.reject(error)).catch(error => Promise.reject(error))
+                        //If it does not have any teacher or student roles. Then error
+                        return logindispatch(getRole(getUserRes.data.id)).unwrap().then((res) => {
+                            if (res.find((role: any) => role.appAdmin || role.admin || !!role.employee || !!role.visitor) != undefined) return Promise.reject("auth/user-invalid-role")
+                        }).catch(error => Promise.reject(error)).catch(error => Promise.reject(error))
                     })
                     .then(() => {
+                        logindispatch(logIn(getUserRes.data))
                         navigation.navigate("LoggedIn")
                         reset();
                     })
                     .catch((error) => Promise.reject(error))
             })
             .catch((error) => {
+                console.log(error)
+
                 if (error.code === "ERR_BAD_REQUEST" && error.response.data.code === "firestore/missing-email") setError("emailUserName", {message: "Email not found in the system's database. Please register"})
 
                 if (error.code === 'auth/missing-email') setError("emailUserName", {message: "Email not found in the system's database. Please register"})
@@ -93,13 +99,18 @@ const Login = () => {
 
                 if (error.code === "auth/too-many-requests") setError("emailUserName", {message: `${error.message}.`})
 
-                if (error.code === "auth/user-invalid-role") setError("emailUserName", {message: "User does not contain the level of authentication needed to use the web"})
+                if (error.code === "auth/user-invalid-role" || error === "auth/user-invalid-role") setError("emailUserName", {message: "User does not contain the level of authentication needed to use the mobile"})
 
                 if (error.code === "auth/user-not-found" || error.code === "auth/invalid-email") setError("emailUserName", {message: "Invalid email"})
 
                 if (error.code === "auth/wrong-password") setError("password", {message: "Invalid password"})
             })
     }
+
+    useEffect(() => {
+        logindispatch(resetUser())
+        logindispatch(logOutInsitution())
+    }, [])
 
     return(
         <ScrollView style={{paddingTop: 36, paddingBottom: 36, paddingLeft: 20, paddingRight: 20}}>

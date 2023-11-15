@@ -4,6 +4,7 @@ import EncoredRoleServices from "./encored-role-services"
 import EncoredInstitutionService from "./encored-institution-service"
 import { Credentials } from "../../types/input"
 import { UserCredential } from "firebase/auth"
+import { FixMeLater } from "../../types/FixMeLater"
 
 class EncorEdAuthService {
     signUp(data: any) {
@@ -11,59 +12,7 @@ class EncorEdAuthService {
     }
 
     signIn(credentials: Credentials) {
-        //signInWithEmailAndPassword(auth, credentials.email, credentials.password)
         return signInWithEmailAndPassword(auth, credentials.email, credentials.password)
-        // const account = await signInWithEmailAndPassword(auth, userData.emailUserName, userData.password)
-        //     .then(async (result) => {
-
-        //         //Get User Data
-        //         const userData = await this.get(result.user.email)
-        //                 .then((res) => res)
-        //                 .catch((error) => {throw error})
-
-        //         //Get User Role
-        //         const userRole = await EncoredRoleServices.getAssignedRoles(result.user.email)
-        //                 .then((res) => {
-        //                     return res
-        //                 })
-        //                 .catch((error) => {
-        //                     console.error(error)
-        //                     throw error
-        //                 })
-
-        //         console.log(userData.data)
-
-        //         //Get User Institution
-        //         const userInstitution = await EncoredInstitutionService.viewInstitution(userData.data.institution)
-        //                 .then((res) => {
-        //                     return res
-        //                 })
-        //                 .catch((error) => {
-        //                     throw error
-        //                 })
-
-        //         //Get Subjects assigned to User
-
-        //         //Get Events from Institution
-
-        //         const loggedIn = {
-        //             user: {
-        //                 displayName: result.user.displayName,
-        //                 email: result.user.email,
-        //                 role: userRole.data,
-        //                 institution: userInstitution.data,
-        //                 ...userData.data,
-        //             },
-        //             token: result.user.accessToken
-        //         }
-
-        //         return loggedIn
-        //     })
-        //     .catch((error) => {
-        //         throw error
-        //     })
-
-        // return account
     }
 
     async signOut() {
@@ -78,13 +27,22 @@ class EncorEdAuthService {
             })
     }
 
-    addUser(data: any) {
+    addUser(data: FixMeLater) {
         return http.post("/user/add", data)
     }
 
-    updateUser(data: any) {
-        const {id, userData} = data
-        return http.put(`/user/update/${id}`, userData)
+    updateUser(data: FixMeLater) {
+        const {id, firstName, lastName, email, userName, newPassword} = data
+
+        const newUserDetail = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            userName: userName,
+            password: newPassword
+        }
+
+        return http.put(`/user/update/${id}`, newUserDetail)
     }
 
     deleteUser(data: any) {

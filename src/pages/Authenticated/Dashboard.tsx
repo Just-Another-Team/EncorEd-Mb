@@ -8,23 +8,26 @@ import { navigate } from '../../navigators/RootNavigation'
 import { ImageCard } from '../../components/Cards'
 import { EventImage, SubjectImage } from '../../types/images'
 import { Calendar } from 'react-native-calendars'
+import { useAppSelector } from '../../app/encored-redux-hooks'
 
 const Dashboard = () => {
     const {control, handleSubmit} = useForm();
+
+    const user = useAppSelector(state => state.authentication.user)
 
     return(
         <ScrollView contentContainerStyle={{paddingLeft: 20, paddingTop: 10, paddingBottom: 10, paddingRight: 20}}>
             <View style={{backgroundColor: '#F9F9FF', marginTop: 10, marginBottom: 10, borderRadius: 8, padding: 16}}>
                 <Text style={{color: '#FDB833', fontSize: 28, fontWeight: '700'}}>Welcome</Text>
-                <Text style={{color: '#1789FC', fontSize: 32, fontWeight: '700'}}>Full name here</Text>
+                <Text style={{color: '#1789FC', fontSize: 32, fontWeight: '700'}}>{`${user?.firstName} ${user?.lastName}`}</Text>
             </View>
 
             <View style={{backgroundColor: '#F9F9FF', marginTop: 10, marginBottom: 10, borderRadius: 8, padding: 16, gap: 16}}>
                 <Input
-                name="searchRoom"
-                control={control}
-                label="Looking for a room?"
-                onPressIn={() => {}}/>
+                    name="searchRoom"
+                    control={control}
+                    label="Looking for a room?"
+                    onPressIn={() => { } } formError={undefined}/>
 
                 <ScrollView horizontal contentContainerStyle={{gap: 12}}>
                     <Chip onPress={() => {navigate('Map')}} rippleColor='#74B8FD' style={{backgroundColor: '#548BC3'}} textStyle={{color: '#A2D0FE'}}>Room 217</Chip>

@@ -19,7 +19,10 @@ export const getInstitution = createAsyncThunk(
     "insititution/get",
     async (email: string, {rejectWithValue}) => {
         return await EncoredInstitutionService.get(email)
-            .then((res) => res.data)
+            .then((res) => {
+                console.log("Institution", res.data)
+                return res.data
+            })
             .catch((error) => rejectWithValue(error))
     }
 )
