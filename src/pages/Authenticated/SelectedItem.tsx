@@ -2,8 +2,8 @@ import React from 'react'
 import { View, Image, ScrollView, Alert } from 'react-native'
 import {Button, Text} from 'react-native-paper'
 import { SubjectImage } from '../../types/images'
-import { colors, styles } from '../../styles'
-import { navigate } from '../../navigators/RootNavigation'
+import { colors, styles } from '../../assets/styles/defaultStyle'
+import { navigate } from '../../routes/RootNavigation'
 
 const SelectedItem = () => {
     return(

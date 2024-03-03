@@ -1,28 +1,30 @@
+
 import React from 'react'
 import {ScrollView, View, Alert, GestureResponderEvent} from 'react-native'
 import { Avatar, Button, Text } from 'react-native-paper'
-import { navigate } from '../../navigators/RootNavigation'
+import { navigate } from '../../routes/RootNavigation'
 import { useDispatch, useSelector } from 'react-redux'
-import * as navigation from '../../navigators/RootNavigation'
+import * as navigation from '../../routes/RootNavigation'
 import { logOutUser } from '../../app/features/auth/authSlice'
 import dayjs from 'dayjs'
 import { useAppDispatch, useAppSelector } from '../../app/encored-redux-hooks'
 import { logOutRole } from '../../app/features/role/roleSlice'
 import { logOutInsitution } from '../../app/features/institution/institutionSlice'
+import { FixMeLater } from '../../types/FixMeLater'
 
 const Profile = () => {
     const user = useAppSelector(state => state.authentication.user)
     const institution = useAppSelector(state => state.institution.data)
-    const roles = useAppSelector(state => state.role.data)
+    const role = useAppSelector(state => state.role.data)
 
     const signOutDispatch = useAppDispatch();
 
     const handleSignOut = (e: GestureResponderEvent) => {
         signOutDispatch(logOutUser()).unwrap()
             .then(() => {
+                navigate("Login")
                 signOutDispatch(logOutRole())
                 signOutDispatch(logOutInsitution())
-                navigate("Login")
             })
             .catch((error) => {
                 console.log({page: "Profile", type: "Logout", message: error.message})
@@ -50,7 +52,7 @@ const Profile = () => {
                 <View style={{gap: 16, backgroundColor: '#F9F9FF', borderRadius: 8, padding: 16, marginTop: 24, marginBottom: 8}}>
                     <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={{flex: 1, color: '#1F1F29', fontSize: 28, fontWeight: '700', marginBottom: 4}}>Details</Text>
-                        <Button mode='outlined' compact={true} onPress={() => {navigation.navigate('EditProfile')}}>Edit</Button>
+                        {/* <Button mode='outlined' compact={true} onPress={() => {navigation.navigate('EditProfile')}}>Edit</Button> */}
                     </View>
 
                     <View>
@@ -70,18 +72,17 @@ const Profile = () => {
                         </View>
                     )}
 
-                    
                     {/* Make a type out of these objects */}
                     <View>
                         <Text style={{color: '#1F1F29', fontSize: 18, fontWeight: '700'}}>Role/s Assigned:</Text>
-                        {roles?.map((role: any, ind) => (
-                            <Text key={ind} style={{color: '#1F1F29', fontSize: 18,}}>{`${role.name.charAt(0).toUpperCase()}${role.name.slice(1)}`}</Text>
-                        ))}
+                            {Array.isArray(role.name) ? (
+                                role.name.map((role: FixMeLater, ind: FixMeLater) => (
+                                    <Text key={ind} style={{color: '#1F1F29', fontSize: 18,}}>{`${role.charAt(0).toUpperCase()}${role.slice(1)}`}</Text>
+                                ))
+                            ) : (
+                                <Text style={{color: '#1F1F29', fontSize: 18,}}>{`${role.name.charAt(0).toUpperCase()}${role.name.slice(1)}`}</Text>
+                            )}
                     </View>
-                </View>
-
-                <View style={{gap: 16, backgroundColor: '#F9F9FF', borderRadius: 8, padding: 16, marginTop: 8, marginBottom: 8}}>
-                    <Text style={{color: '#1F1F29', fontSize: 24, fontWeight: '700', marginBottom: 4}}>Navigation History</Text>
                 </View>
             </View>
         </ScrollView>

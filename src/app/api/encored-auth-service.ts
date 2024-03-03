@@ -1,62 +1,75 @@
 import http from "./http-common"
-import { auth, onAuthStateChanged, signInWithCustomToken, signInWithEmailAndPassword, signOut } from "../firebase/authentication"
-import EncoredRoleServices from "./encored-role-services"
-import EncoredInstitutionService from "./encored-institution-service"
-import { Credentials } from "../../types/input"
-import { UserCredential } from "firebase/auth"
-import { FixMeLater } from "../../types/FixMeLater"
+import { ILogin } from "../../types/ILogin"
+
+type SignInResponse = {
+    idToken: string; 
+    email: string;
+    refreshToken: string; 
+    expiresIn: string; 
+    localId: string;
+    registered: boolean;
+}
 
 class EncorEdAuthService {
-    signUp(data: any) {
-        return http.post("/user/signUp", data)
+
+    getAPIKey () {
+        return http.get<string>("/user/key")
     }
 
-    signIn(credentials: Credentials) {
-        return signInWithEmailAndPassword(auth, credentials.email, credentials.password)
+    signIn (loginCredentials: ILogin, key: string) {
+        return http.post<SignInResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`, {...loginCredentials, returnSecureToken: true})
     }
 
-    async signOut() {
-        console.log("Signing Out")
+    // signUp(data: any) {
+    //     return http.post("/user/signUp", data)
+    // }
 
-        return await signOut(auth)
-            .then((res) => {
-                return res
-            })
-            .catch((error) => {
-                throw error
-            })
-    }
+    // signIn(credentials: Credentials) {
+    //     return signInWithEmailAndPassword(auth, credentials.email, credentials.password)
+    // }
 
-    addUser(data: FixMeLater) {
-        return http.post("/user/add", data)
-    }
+    // async signOut() {
+    //     console.log("Signing Out")
 
-    updateUser(data: FixMeLater) {
-        const {id, firstName, lastName, email, userName, newPassword} = data
+    //     return await signOut(auth)
+    //         .then((res) => {
+    //             return res
+    //         })
+    //         .catch((error) => {
+    //             throw error
+    //         })
+    // }
 
-        const newUserDetail = {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            userName: userName,
-            password: newPassword
-        }
+    // addUser(data: FixMeLater) {
+    //     return http.post("/user/add", data)
+    // }
 
-        return http.put(`/user/update/${id}`, newUserDetail)
-    }
+    // updateUser(data: FixMeLater) {
+    //     const {id, firstName, lastName, email, userName, newPassword} = data
 
-    deleteUser(data: any) {
-        const {id} = data
-        return http.put(`/user/update/${id}`)
-    }
+    //     const newUserDetail = {
+    //         firstName: firstName,
+    //         lastName: lastName,
+    //         email: email,
+    //         userName: userName,
+    //         password: newPassword
+    //     }
 
-    getAll() {
-        return http.get("/user/list")
-    }
+    //     return http.put(`/user/update/${id}`, newUserDetail)
+    // }
 
-    get(data: string) {
-        return http.get(`/user/list/${data}`)
-    }
+    // deleteUser(data: any) {
+    //     const {id} = data
+    //     return http.put(`/user/update/${id}`)
+    // }
+
+    // getAll() {
+    //     return http.get("/user/list")
+    // }
+
+    // get(data: string) {
+    //     return http.get(`/user/list/${data}`)
+    // }
 }
 
 export default new EncorEdAuthService()

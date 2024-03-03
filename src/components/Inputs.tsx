@@ -3,7 +3,7 @@ import { Controller, useController } from 'react-hook-form';
 import {View} from 'react-native'
 import { TextInput, Text } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/AntDesign'
-import { TextInputProps } from '../types/input';
+import { TextInputProps } from '../types/InputType';
 import { StyleSheet } from 'react-native';
 
 const Input: React.FC<TextInputProps> = ({ 

@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper'
 import { Calendar, CalendarList } from 'react-native-calendars'
 import { HeaderCard } from '../../components/Cards'
 import { EventImage } from '../../types/images'
-import { navigate } from '../../navigators/RootNavigation'
+import { navigate } from '../../routes/RootNavigation'
 
 const Event = () => {
     return(

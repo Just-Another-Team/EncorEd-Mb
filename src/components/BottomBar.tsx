@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {View, Modal, StyleSheet, Dimensions, ScrollView, Alert} from 'react-native'
 import { Button, Text, TextInput } from 'react-native-paper'
-import { styles } from '../styles'
+import { styles } from '../assets/styles/defaultStyle'
 import { EventCard, SubjectCard } from './Cards'
 import { useAppSelector } from '../app/encored-redux-hooks'
 
@@ -10,7 +10,7 @@ enum SelectedSchedList {
     Event = 'event'
 }
 
-const RoomInformation = ({showModal, roomTitle, onCardPress, onRequestClose}:any) => {
+const RoomInformation = ({showModal, roomTitle, onCardPress, onRequestClose}: any) => {
 
     const windowHeight = Dimensions.get('window').height
 

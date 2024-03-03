@@ -1,13 +1,25 @@
 // A File that contains Aliases and Interfaces of navigation
 
+import AttendanceDataType from "./AttendanceDataType";
+
+
 export type AuthStackParamList = {
     Landing: undefined;
     Login: undefined;
     Register: undefined;
     LoggedIn: undefined; //Needs parameters because Authentication
-    EditProfile: undefined
+    EditProfile: undefined;
+    Notifications: undefined;
+    Room: undefined;
+    Attendance: undefined;
     // Profile: undefined;
     // Dashboard: undefined; //Needs parameters because authentication!
+
+    //Debug Screens
+    QR: undefined;
+    Charts: undefined;
+    UI: undefined;
+    LinkPage: AttendanceDataType;
 }
 
 export type DrawerStackParamList = {

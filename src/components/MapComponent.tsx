@@ -1,29 +1,71 @@
-import React, {useEffect, useRef, useState, useMemo} from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
-  Dimensions,
-  Modal,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
-  View,
 } from 'react-native';
-import MapboxGL, { 
+import MapboxGL, {
   MapView,
   Camera,
+  BackgroundLayer,
   VectorSource,
-  FillLayer
 } from "@rnmapbox/maps"
 import { CampusMapProps } from '../types/componentProps';
+import { FixMeLater } from '../types/FixMeLater';
+import { Floors } from './MapLevelData/MapLayers';
+import { DefaultFillSourceLayer } from './MapLayers/DefaultFillSourceLayer';
+import { DefaultLineSourceLayer } from './MapLayers/DefaultLineSourceLayer';
+import { DefaulPointSourceLayer } from "./MapLayers/DefaultPointSourceLayer"
+import { useAppDispatch, useAppSelector } from '../app/encored-redux-hooks';
+import { getMap } from '../app/features/navigation/navigationSlice';
 
 MapboxGL.setAccessToken("pk.eyJ1IjoiYW1hcmlsbG9zaGlubGVlIiwiYSI6ImNsaXV6aXVlMTFnb3czZHF2cDhqZTVrZGkifQ.FAXnyRwlTeFX1y6E8z5LIA")
 
 const CampusMap = ({centerCoordinate, zoom, filter, onPress, floor}: CampusMapProps) => {
+  const navigationSelector = useAppSelector(state => state.navigation)
+  const navigationDispatch = useAppDispatch();
+
+  const map = useRef<VectorSource>(null)
+
+  const handleMapLoad = () => {
+    navigationDispatch(getMap(map))
+
+    console.log("HELLO!? <-")
+    if (map.current) {
+      // map.current.queryRenderedFeaturesInRect([300, 300, 300, 300], []).then((result) => {
+      //   result?.features.map((feature) => {
+      //     console.log(feature.properties)
+      //   })
+      // }).catch((e) => { console.log(e) })
+      const arr: FixMeLater[] = ['basement_point_layer', 'ground_point_layer'];
+
+      map.current.features([] as never[], []).then((result: FixMeLater) => {
+        console.log("Result: ", result)
+      }).catch((e: FixMeLater) => console.error(e))
+    }
+  }
+
+  useEffect(() => {
+    if (map.current) {
+      // map.current.queryRenderedFeaturesInRect([300, 300, 300, 300], []).then((result) => {
+      //   result?.features.map((feature) => {
+      //     console.log(feature.properties)
+      //   })
+      // }).catch((e) => { console.log(e) })
+      const arr: FixMeLater[] = ['basement_point_layer', 'ground_point_layer'];
+
+      map.current.features(arr as never[]).then((result: FixMeLater) => {
+        console.log("Result: ", result)
+      }).catch((e: FixMeLater) => console.error(e))
+    }
+
+    //TO-DO: Get all of the damn features
+  }, [])
 
   return(
     <MapView
+    onPress={onPress}
+    onDidFinishLoadingMap={handleMapLoad}
+    styleURL='mapbox://styles/amarilloshinlee/clqoecjrx00b001po715sho0g'
+    //ref={map} //You can set the map here... maybe
     style={styles.map}>
 
       <Camera
@@ -37,211 +79,85 @@ const CampusMap = ({centerCoordinate, zoom, filter, onPress, floor}: CampusMapPr
       centerCoordinate={centerCoordinate}
       /> 
 
-      <Secondfloor floor={floor} filter={filter} onPress={onPress}/>
-      <Mezzanine floor={floor} filter={filter} onPress={onPress} />
-      
-      <Upperfloor floor={floor} filter={filter} onPress={onPress}/>
+      {Floors.map((el, ind) => {
+        return (
+            <>
+                <DefaulPointSourceLayer
+                type={el.points.type}
+                // key={ind}
+                testRef={map}
+                sourceId={el.points.sourceId}
+                tilesetId={el.points.tilesetId}
+                layerId={el.points.layerId}
+                sourceLayer={el.points.sourceLayer}
+                beforeLayer={el.points.beforeLayer}
+                //beforeLayer={`${el.name.toLowerCase()}_roomFilter_layer`}
+                // layout={{
+                //     visibility: "visible",
+                //     "icon-image": "kiosk"
+                // }}
+                // style={{
+                //   visibility: "visible",
+                // }}
+                filter={['all', ["in", "point_level", floor]]} //['in', 'id', ...routes]
+                />
 
-      <Ground floor={floor} filter={filter} onPress={onPress}/>
+                <DefaultLineSourceLayer
+                type={el.routes.type}
+                // key={ind}
+                sourceId={el.routes.sourceId}
+                tilesetId={el.routes.tilesetId}
+                layerId={el.routes.layerId}
+                sourceLayer={el.routes.sourceLayer}
+                beforeLayer={el.routes.beforeLayer}
+                //filter={['in', 'id', '']}
+                //filter={['all', ['in', 'id', ...routes], ["in", "route_level", prop.selectedFloor]]} //['in', 'id', ...routes] //["in", "route_level", prop.selectedFloor]
+                filter={['all', ["in", "route_level", floor]]}
+                //filter={['all', ['in', 'id', ...navigationSelector.routes!], ["in", "route_level", prop.selectedFloor]]}
+                style={el.routes.style}/>
 
-      <Basement floor={floor} filter={filter} onPress={onPress}/>
+                <DefaultFillSourceLayer
+                type={el.rooms.type}
+                // key={ind}
+                name={el.name}
+                sourceId={el.rooms.sourceId}
+                beforeLayer={el.rooms.beforeLayer}
+                tilesetId={el.rooms.tilesetId}
+                layerId={el.rooms.layerId}
+                sourceLayer={el.rooms.sourceLayer}
+                //roomFilter={roomFilter}
+                filter={["in", "room_level", floor]}
+                style={el.rooms.style}/>
 
+                <DefaultFillSourceLayer
+                type={el.roombase.type}
+                // key={ind}
+                sourceId={el.roombase.sourceId}
+                tilesetId={el.roombase.tilesetId}
+                layerId={el.roombase.layerId}
+                sourceLayer={el.roombase.sourceLayer}
+                beforeLayer={el.roombase.beforeLayer}
+
+                filter={["in", "rbase_leve", floor]}
+
+                style={el.roombase.style}/>
+
+                <DefaultFillSourceLayer
+                type={el.base.type}
+                // key={ind}
+                sourceId={el.base.sourceId}
+                tilesetId={el.base.tilesetId}
+                layerId={el.base.layerId}
+                sourceLayer={el.base.sourceLayer}
+                beforeLayer={el.base.beforeLayer}
+
+                filter={["in", "base_level", floor]}
+
+                style={el.base.style}/>
+          </>
+        )
+      })}
     </MapView>
-  )
-}
-
-const Basement = ({floor, onPress, filter}:any) => {
-  return(
-    <>
-      <VectorSource
-      id='Basement_base_vs'
-      url='mapbox://amarilloshinlee.clkj7u5fo0ake2jnthdokr2uq-6reio'>
-
-        <FillLayer
-        id='basement_base_fl'
-        sourceID='Basement_base_vs'
-        sourceLayerID='Basement_base_TS'
-        style={{
-          fillColor: "#8c0606"
-        }}
-        />
-
-      </VectorSource>
-
-      <VectorSource
-      onPress={floor === 'B' && onPress}
-      id='Basement_rooms_vs'
-      url='mapbox://amarilloshinlee.clkj7y7pp048a2bnrjj1njaqx-64e8r'>
-
-        <FillLayer
-        id='basement_rooms_fl'
-        sourceID='Basement_rooms_vs'
-        sourceLayerID='Basement_rooms'
-        aboveLayerID='basement_base_fl'
-        style={{
-          visibility: floor === 'B' ? 'visible' : 'none',
-          fillColor: "#cf3e3e"
-        }}
-        />
-
-        <FillLayer
-        id='basement_rooms_fl_filter'
-        sourceID='Basement_rooms_vs'
-        sourceLayerID='Basement_rooms'
-        aboveLayerID='basement_rooms_fl'
-        filter={filter}
-        style={{
-          visibility: floor === 'B' ? 'visible' : 'none',
-          fillColor: "#ffa8a8"
-        }}
-        />
-
-      </VectorSource>
-    </>
-  )
-}
-
-const Ground = ({floor, onPress, filter}:any) => {
-  return(
-    <>
-      <VectorSource
-      id='Ground_base_vs'
-      url='mapbox://amarilloshinlee.clkj8y3i504j62hjofi4dbgii-5sn2g'>
-        <FillLayer
-        id='ground_base_fl'
-        sourceID='Ground_base_vs'
-        sourceLayerID='Ground_base'
-        aboveLayerID='basement_rooms_fl'
-        style={{
-          visibility: floor !== 'B' ? 'visible' : 'none',
-          fillColor: "#945309"
-        }}
-        />
-      </VectorSource>
-
-      <VectorSource
-      onPress={floor === 'G' && onPress}
-      id='Ground_rooms_vs'
-      url='mapbox://amarilloshinlee.clkj97amc03ai2hoabzco05y2-58eeo'>
-
-        <FillLayer
-        id='ground_rooms_fl'
-        sourceID='Ground_rooms_vs'
-        sourceLayerID='Ground_rooms'
-        aboveLayerID='ground_base_fl'
-        style={{
-          visibility: floor === 'G' ? 'visible' : 'none',
-          fillColor: "#de8e33"
-        }}
-        />
-
-        <FillLayer
-        id='ground_rooms_fl_filter'
-        sourceID='Ground_rooms_vs'
-        sourceLayerID='Ground_rooms'
-        aboveLayerID='ground_rooms_fl'
-        filter={filter}
-        style={{
-          visibility: floor === 'G' ? 'visible' : 'none',
-          fillColor: "#f7c081"
-        }}
-        />
-
-      </VectorSource>
-    </>
-  )
-}
-
-const Upperfloor = ({floor}:any) => {
-  return(
-    <VectorSource
-      id='Upperfloor_base_vs'
-      url='mapbox://amarilloshinlee.clkk7x7wc0j3b2anxuxen5yah-37tsr'>
-
-      <FillLayer
-      id='upperfloor_base_fl'
-      sourceID='Upperfloor_base_vs'
-      sourceLayerID='Upperfloor_base'
-      aboveLayerID='ground_rooms_fl'
-      style={{
-        visibility: floor !== 'B' && floor !== 'G' ? 'visible' : 'none',
-        fillColor: "#819407"
-      }}
-      />
-
-    </VectorSource>
-  )
-}
-
-const Mezzanine = ({floor, onPress, filter}: any) => {
-  return(
-    <>
-      <VectorSource
-      onPress={floor === 'M' && onPress}
-      id='Mezzanine_rooms_vs'
-      url='mapbox://amarilloshinlee.clkak13yd02412bntayv0jqcz-5nk8z'>
-
-        <FillLayer
-        id='Mezzanine_rooms_fl'
-        sourceID='Mezzanine_rooms_vs'
-        sourceLayerID='Mezzanine_rooms'
-        aboveLayerID='upperfloor_base_fl'
-        style={{
-          visibility: floor === 'M' ? 'visible' : 'none',
-          fillColor: "#cbe03f"
-        }}
-        />
-
-        <FillLayer
-        id='Mezzanine_rooms_fl_filter'
-        sourceID='Mezzanine_rooms_vs'
-        sourceLayerID='Mezzanine_rooms'
-        aboveLayerID='Mezzanine_rooms_fl'
-        filter={filter}
-        style={{
-          visibility: floor === 'M' ? 'visible' : 'none',
-          fillColor: "#edff73"
-        }}
-        />
-
-      </VectorSource>
-    </>
-  )
-}
-
-const Secondfloor = ({floor, onPress, filter}: any) => {
-  return(
-    <>
-      <VectorSource
-      onPress={floor === '2' && onPress}
-      id='Secondfloor_rooms_vs'
-      url='mapbox://amarilloshinlee.clkk931nk01h72amq9llaz3f9-6p1ko'>
-
-        <FillLayer
-        id='Secondfloor_rooms_fl'
-        sourceID='Secondfloor_rooms_vs'
-        sourceLayerID='Secondfloor_rooms'
-        aboveLayerID='Mezzanine_rooms_fl'
-        style={{
-          visibility: floor === '2' ? 'visible' : 'none',
-          fillColor: "#7ae03f"
-        }}
-        />
-
-        <FillLayer
-        id='Secondfloor_rooms_fl_filter'
-        sourceID='Secondfloor_rooms_vs'
-        sourceLayerID='Secondfloor_rooms'
-        aboveLayerID='Secondfloor_rooms_fl'
-        filter={filter}
-        style={{
-          visibility: floor === '2' ? 'visible' : 'none',
-          fillColor: "#abff7a"
-        }}
-        />
-
-      </VectorSource>
-    </>
   )
 }
 
@@ -249,7 +165,7 @@ export {CampusMap}
 
 const styles = StyleSheet.create({
   map: {
-    flex: 1
+    flex: 1,
   }
 });
   

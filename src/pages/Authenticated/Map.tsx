@@ -1,28 +1,26 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import {View} from 'react-native'
-import { Text } from 'react-native-paper'
+import {Button, Pressable, View} from 'react-native'
+import { FAB, Text } from 'react-native-paper'
 import { Input } from '../../components/Inputs'
 import { useForm } from 'react-hook-form'
 import { RoomInformation } from '../../components/BottomBar'
 import { CampusMap } from '../../components/MapComponent'
 import { RoomLocation } from '../../types/componentProps'
-import { navigate } from '../../navigators/RootNavigation'
+import { navigate } from '../../routes/RootNavigation'
 import DropDownPicker from 'react-native-dropdown-picker'
+import { MapLevel } from '../../components/MapLevel/MapLevel'
+import { centerToRoom } from '../../app/features/centerToRoom/centerToRoom'
+import { useAppSelector } from '../../app/encored-redux-hooks'
 
 // The SVG Map or Map sets goes here
 
 const Map = () => {
     //const {control, handleSubmit} = useForm();
+    const levelSelector = useAppSelector(state => state.level);
 
     //Dropdown Picker
     const [open, setOpen] = useState(false)
     const [floor, setFloor] = useState('G')
-    const [items, setItems] = useState([
-        {value: 'B', label: "Basement"},
-        {value: 'G', label: "Ground"},
-        {value: 'M', label: "Mezzanine"},
-        {value: '2', label: "2nd Floor"},
-    ])
 
     //Modal
     const [showModal, setShowModal] = useState(false)
@@ -57,54 +55,31 @@ const Map = () => {
     const selectRoomPress = (event: any) => {
         const room = event.features && event.features[0]
 
-        if (room === undefined) return;
 
-        setClickInfo({
-            longitude: event.coordinates.longitude,
-            latitude: event.coordinates.latitude,
-            roomName: room.properties.Name  
-        })
+        console.log();
+        // if (room === undefined) return;
 
-        const {x, y} = centerToRoom(room.geometry.coordinates[0])
+        // setClickInfo({
+        //     longitude: event.coordinates.longitude,
+        //     latitude: event.coordinates.latitude,
+        //     roomName: room.properties.room_name  
+        // })
 
-        setLon(x)
-        setLat(y)
-        setZoom(20.25)
+        // const {x, y} = centerToRoom(room.geometry.coordinates[0])
 
-        setShowModal(true)
-    }
+        // setLon(x)
+        // setLat(y)
+        // setZoom(20.25)
 
-    const centerToRoom = (coordinates:number[][]) => {
-        var x = 0;
-        var y = 0;
-
-        var i:number = 0;
-        for (; i < coordinates.length - 1; i++) {
-            x += coordinates[i][0]
-            y += coordinates[i][1]
-        }
-
-        return {x: x/(coordinates.length - 1), y: (y/(coordinates.length - 1)) - 0.0001}
+        // setShowModal(true)
     }
 
     const selectedRoom = (clickInfo && clickInfo.roomName) || ''
-    const roomFilter = useMemo(() => ['in', 'Name', selectedRoom], [selectedRoom])
+    const roomFilter = useMemo(() => ['in', 'room_name', selectedRoom], [selectedRoom])
 
     return(
-        <View style={{flex: 1}}>
-            <View style={{display: showModal === true ? 'none' : 'flex', position: 'absolute', right: 0, zIndex: 1, width: '50%', padding: 16}}>
-                <View style={{backgroundColor: '#FEFEFE', borderRadius: 8, padding: 16}}>
-                    <Text style={{color: '#296EB4', fontSize: 18, fontWeight: '700', }}>Floor</Text>
-                    <DropDownPicker
-                    open={open}
-                    value={floor}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setFloor}
-                    setItems={setItems}
-                    />
-                </View>
-            </View>
+        <View style={{flex: 1, backgroundColor: "#F30"}}>
+            <MapLevel />
 
             <RoomInformation
             roomTitle={clickInfo.roomName}
@@ -116,10 +91,9 @@ const Map = () => {
             <CampusMap
             onPress={selectRoomPress}
             zoom={zoom}
-            floor={floor}
+            floor={levelSelector.selectedLevel.levelKey.toLowerCase()}
             filter={roomFilter}
-            centerCoordinate={[lon, lat]}
-            />
+            centerCoordinate={[lon, lat]}/>
         </View>
     )
 }

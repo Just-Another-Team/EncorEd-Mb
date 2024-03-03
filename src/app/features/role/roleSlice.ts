@@ -3,13 +3,13 @@ import encoredRoleServices from "../../api/encored-role-services";
 
 interface RoleState {
     loading: boolean,
-    data: Array<object> | undefined,
+    data: any | undefined,
     error: any
 }
 
 const initialState: RoleState = {
     loading: false,
-    data: [],
+    data: {},
     error: null
 }
 
@@ -38,7 +38,7 @@ const roleSlice = createSlice({
                 state.loading = true
                 state.error = null
             })
-            builder.addCase(getRole.fulfilled, (state, actions: PayloadAction<Array<object>>) => {
+            builder.addCase(getRole.fulfilled, (state, actions: PayloadAction<any>) => {
                 console.log("Role Action", actions.payload)
                 state.loading = false
                 state.data = actions.payload
@@ -46,7 +46,7 @@ const roleSlice = createSlice({
             })
             builder.addCase(getRole.rejected, (state, actions: PayloadAction<any>) => {
                 state.loading = false
-                state.data = []
+                state.data = {}
                 state.error = actions.payload.code
             })
         }
