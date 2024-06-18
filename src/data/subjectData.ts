@@ -1,38 +1,71 @@
-import SubjectDataType from "../types/SubjectDataType"
+import ISubject from "../types/ISubject";
 
-const subjectData: Array<SubjectDataType> = [
+export enum SubStatusEnum {
+    Active,
+    Inactive
+}
+
+export  type SubjectType = {
+    subId: string;
+    subCode: string;
+    subDescription: string;
+    subStartSchedule: Date | string;
+    subEndSchedule: Date | string;
+    subWeekAssigned: Array<string>;
+    userId: string;
+    roomId: string;
+    subStatus: SubStatusEnum;
+}
+
+export const Subjects: Array<SubjectType> = [
     {
-        edpCode: "66253",
-        subjectDesc: "ENGL 016",
-        type: "LEC",
-        days: ["monday", "wednesday"],
-        startTime: "2024-01-23T04:00:00.000Z",
-        endTime: "2024-01-23T05:30:00.000Z"
+        subId: "1231",
+        subCode: "SUB-12345",
+        subDescription: "Subject Protocol 1 Lit",
+        subStartSchedule: "",
+        subEndSchedule: "",
+        subWeekAssigned: [
+            "Monday",
+            "Wednesday",
+            "Friday",
+        ],
+        userId: "user101",
+        roomId: "1_room103",
+        subStatus: SubStatusEnum.Active,
     },
     {
-        edpCode: "66243",
-        subjectDesc: "ENGL 018",
-        type: "LEC",
-        days: ["monday", "wednesday"],
-        startTime: "2024-01-23T02:30:00.000Z",
-        endTime: "2024-01-23T04:00:00.000Z"
-    },
-    {
-        edpCode: "66062",
-        subjectDesc: "STS 101",
-        type: "LEC",
-        days: ["tuesday", "thursday"],
-        startTime: "2024-01-23T04:00:00.000Z",
-        endTime: "2024-01-23T05:30:00.000Z"
-    },
-    {
-        edpCode: "66300",
-        subjectDesc: "TC EC 311",
-        type: "LEC",
-        days: ["friday", "saturday"],
-        startTime: "2024-01-23T02:30:00.000Z",
-        endTime: "2024-01-23T04:00:00.000Z"
+        subId: "1232",
+        subCode: "SUB-12345",
+        subDescription: "Subject Protocol 1 Lab",
+        subStartSchedule: "",
+        subEndSchedule: "",
+        subWeekAssigned: [
+            "Tuesday",
+            "Thursday",
+        ],
+        userId: "user101",
+        roomId: "1_room101",
+        subStatus: SubStatusEnum.Active,
     },
 ]
 
-export default subjectData
+export const OngoingSubjectData: Array<ISubject> = [
+    {
+        SUB_ID: "WUGIjIh2UjHB6Yq22JI2",
+        SUB_CODE: "subject_MWF_TDP-23456",
+        SUB_DESCRIPTION: "Test New Subject ID",
+        SCHED_ID: "subject_MWF_TDP-23456",
+        USER_ID: "odFkJ7l7RFYveHwqgyIYi7oxVU02",
+        ROOM_ID: "room_classroom_room207",
+        SUB_STATUS: "",
+    },
+    {
+        SUB_ID: "cKGRIxxGmLzgtK5gTmdN",
+        SUB_CODE: "TS-TestingEveryday",
+        SUB_DESCRIPTION: "Test everyday sched",
+        SCHED_ID: "subject_MTThWFS_TS-TestingEveryday",
+        USER_ID: "bo7nsS0w1UVE7XVUYK70Vpi5FIy2",
+        ROOM_ID: "room_classroom_room217",
+        SUB_STATUS: "",
+    },
+]

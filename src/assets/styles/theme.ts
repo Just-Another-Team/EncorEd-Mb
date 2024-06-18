@@ -30,5 +30,17 @@ export const Theme: ThemeProp = {
 
         surface: Color("darkBlue", 400) as string, 
         onSurface: Color("black", 400) as string, //Text
+
+        surfaceVariant: Color("white", 400) as string,  //Drop down contained and other text inputs
+        onSecondary: Color("black", 400) as string, 
+    }
+}
+
+export const NotificationButtonTheme: ThemeProp = {
+    ...DefaultTheme,
+
+    colors: {
+        primary: Color("gold", 400) as string,
+        surfaceVariant: Color("white", 400) as string,
     }
 }

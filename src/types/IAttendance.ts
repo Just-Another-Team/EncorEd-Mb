@@ -1,13 +1,17 @@
-export default interface IAttendance {
-    id?: string;
-    institution?: string;
-    roomName: string;
-    submitBy: string;
-    submitAt: Date | string;
-    verifyBy?: string | null;
-    verifyAt?: Date | string | null;
-    description?: string;
-    status:  string;
-}
+import { AttendanceSubmissionDate } from "../data/AttendanceSubmissionDate";
+import IRoom from "./IRoom";
+import ISubject from "./ISubject";
+import IUser from "./IUser";
 
-export type AttendanceType = IAttendance
+export default interface IAttendance {
+    ATTD_ID?: string | null;
+    ATTD_SCANDATE?: Date | string | null;
+    ATTD_SUBMISSIONDATE?: Date | string | AttendanceSubmissionDate | null;
+    ATTD_COMMENT?: string | null;
+    SUB_ID: ISubject | string;
+    ROOM_ID: IRoom | string;
+    USER_ID: IUser | string;
+    ATTD_TEACHERSTATUS: string | null;
+    ATTD_STATUS?: string | null;
+    USER_PROFILE?: string | null
+}

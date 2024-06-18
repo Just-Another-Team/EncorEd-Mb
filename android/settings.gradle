@@ -16,6 +16,9 @@ dependencyResolutionManagement {
             password = MAPBOX_DOWNLOADS_TOKEN
           }
         }
+        maven { 
+          url "$rootDir/../node_modules/@notifee/react-native/android/libs" 
+        }
     }
 }
 rootProject.name = 'encoredmobile'

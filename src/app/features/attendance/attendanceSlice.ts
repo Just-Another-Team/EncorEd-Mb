@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FixMeLater } from "../../../types/FixMeLater";
-import EncoredAttendanceService from "../../api/encored-attendance-service";
+import EncoredAttendanceService from "../../api/attendance-service";
 
 type AttendanceStateType = {
     loading: boolean,

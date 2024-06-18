@@ -1,23 +1,27 @@
 import http from "./http-common"
-import { ILogin } from "../../types/ILogin"
+import IUser from "../../types/IUser";
 
-type SignInResponse = {
-    idToken: string; 
-    email: string;
-    refreshToken: string; 
-    expiresIn: string; 
-    localId: string;
-    registered: boolean;
-}
+class UserService {
+    private userCommon:string = "/user"
 
-class EncorEdAuthService {
-
-    getAPIKey () {
-        return http.get<string>("/user/key")
+    addFCMToken (id: string, token: string) {
+        return http.put(`${this.userCommon}/add/fcm/${id}`, { fcmToken: token })
     }
 
-    signIn (loginCredentials: ILogin, key: string) {
-        return http.post<SignInResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`, {...loginCredentials, returnSecureToken: true})
+    getAPIKey () {
+        return http.get(`${this.userCommon}/key`)
+    }
+
+    getUser(uid: string) {
+        return http.get<IUser>(`${this.userCommon}/view/s/${uid}`)
+    }
+
+    getUsers() {
+        return http.get<Array<IUser>>(`${this.userCommon}/view/all`)
+    }
+
+    getUserCredentials(uid: string) {
+        return http.get(`${this.userCommon}/view/s/auth/${uid}`)
     }
 
     // signUp(data: any) {
@@ -72,4 +76,4 @@ class EncorEdAuthService {
     // }
 }
 
-export default new EncorEdAuthService()
+export default new UserService()

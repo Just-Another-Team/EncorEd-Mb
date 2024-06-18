@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from "@react-navigation/drawer"
 import React from "react"
 import Dashboard from "../pages/Authenticated/Dashboard"
-import Profile from "../pages/Authenticated/Profile"
+import Profile from "../pages/Profile"
 import { IconButton, Text } from "react-native-paper"
 import { Alert, Image } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -34,6 +34,7 @@ const DrawerStack = () => {
                 drawerPosition: "right"
             }}>
             <Drawer.Screen name="Dashboard" component={Dashboard}/>
+            
             <Drawer.Screen name="Profile" component={Profile} />
         </Drawer.Navigator>
     )

@@ -1,42 +1,35 @@
 // A File that contains Aliases and Interfaces of navigation
 
+import { RoomType } from "../data/roomData";
 import AttendanceDataType from "./AttendanceDataType";
+import IAttendance from "./IAttendance";
 
 
 export type AuthStackParamList = {
-    Landing: undefined;
     Login: undefined;
-    Register: undefined;
-    LoggedIn: undefined; //Needs parameters because Authentication
-    EditProfile: undefined;
-    Notifications: undefined;
-    Room: undefined;
-    Attendance: undefined;
-    // Profile: undefined;
-    // Dashboard: undefined; //Needs parameters because authentication!
-
-    //Debug Screens
-    QR: undefined;
-    Charts: undefined;
-    UI: undefined;
-    LinkPage: AttendanceDataType;
-}
-
-export type DrawerStackParamList = {
     Dashboard: undefined;
-    Profile: undefined;
+
+    Notifications: undefined;
+    OngoingSubjects: undefined;
+    RecentAttendances: undefined;
+    AttendanceForm: RoomType;
+    AttendanceReceipt: IAttendance;
+    
+    //Debug Screens
+    // QR: undefined;
+    // Charts: undefined;
+    // UI: undefined;
+    // LinkPage: AttendanceDataType;
 }
+
 
 export type DashboardStackParamList = {
     Home: undefined;
-    Subject: undefined;
-    Map: undefined;
-    Event: undefined;
-    Group: undefined;
-    SelectedItem: undefined;
+    QR: undefined;
+    Profile: undefined
 }
 
-export interface RootStackParamList extends AuthStackParamList, DrawerStackParamList, DashboardStackParamList {}
+export interface RootStackParamList extends AuthStackParamList, DashboardStackParamList {}
 
 // Global navigation
 declare global {

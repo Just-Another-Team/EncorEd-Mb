@@ -1,72 +1,78 @@
-import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Icon from 'react-native-vector-icons/FontAwesome'
-import IconFeather from 'react-native-vector-icons/Feather'
-import { Alert, Image, Pressable, View } from 'react-native'
-import { Badge, IconButton, Text, TextInput } from "react-native-paper";
-import * as navigation from './RootNavigation'
-import Dashboard from "../pages/Authenticated/Dashboard";
-import Profile from "../pages/Authenticated/Profile";
-import Report from "../pages/Authenticated/Report/Report";
-import { useAppSelector } from "../app/encored-redux-hooks";
-import IAttendance from "../types/IAttendance";
+import { View } from 'react-native'
+import { Badge, IconButton } from "react-native-paper";
+import Home from "../pages/Home";
+import Profile from "../pages/Profile";
+import QRScanner from "../pages/QRScanner";
+import Icon from "react-native-paper/src/components/Icon";
+import Color from "../assets/styles/Color";
+import { NotificationButtonTheme } from "../assets/styles/theme";
+import { useNavigation } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator()
 
-const DashboardStack = () => {
-    const role = useAppSelector(state => state.role.data)
-    const attendances = useAppSelector(state => state.attendance.data)
+const NotificationButton = () => {
+    const { navigate } = useNavigation()
 
+    return (
+        <View style={{marginRight: 4}}>
+            <IconButton
+            theme={NotificationButtonTheme}
+            mode="contained"
+            icon="bell-outline"
+            onPress={() => navigate("Notifications")}/>
+            <Badge
+            visible={false}
+            style={{
+                position: 'absolute',
+                top: 4,
+                right: 0,
+            }}>
+                3
+            </Badge>
+        </View>
+    )
+}
+
+const UserStack = () => {
     return(
         <Tab.Navigator
         screenOptions={({route}) => ({
             headerTitleStyle: {
                 fontWeight: 'bold',
                 color: '#F9F9FF',
-                padding: 8
             },
-            headerRight: () => {
-                return (
-                    <View style={{marginRight: 24}}>
-                        <IconButton
-                        style={{backgroundColor: '#F9F9FF'}}
-                        onPress={ (e) => { navigation.navigate("Notifications") } }
-                        icon={() => <IconFeather color="#FDB833" size={24} name="bell" />}
-                        />
-                    </View>
-                )
-            },
+            //headerRight: NotificationButton,
             headerStyle: {
                 backgroundColor: "#45A1FD",
                 height: 72
             },
-            tabBarIcon: ({focused, color, size}) => {
-                let iconName: string = 'disc';
+            tabBarIcon: ({color}) => {
+                let iconName = 'disc';
 
-                if (route.name === "Home") iconName = 'home'
-                else if (route.name === "Report") iconName = 'clipboard'
-                else if (route.name === "Map") iconName = 'map'
-                else if (route.name === "Event") iconName = 'calendar'
-                else if (route.name === "Profile") iconName = 'user'
+                if (route.name === "Home") iconName = 'home-outline'
+                else if (route.name === "QR") iconName = 'qrcode-scan'
+                else if (route.name === "Profile") iconName = 'account-outline'
 
-                return <IconFeather size={28} name={iconName} color={color} />
+                return <Icon size={28} source={iconName} color={color} />
             },
             tabBarActiveTintColor: '#F9F9FF',
             tabBarActiveBackgroundColor: '#6DB6FD',
             tabBarInactiveTintColor: '#F9F9FF',
-            tabBarLabelStyle: {
-                fontWeight: 'bold'
-            },
+            tabBarLabelStyle: { fontWeight: 'bold' },
             tabBarStyle: {
                 height: 64,
                 backgroundColor: '#45A3FD'
             },
         })}>
-            <Tab.Screen name="Home" component={Dashboard}/>
+            <Tab.Screen name="Home" component={Home}/>
+            {/* <Tab.Screen name="Home" component={Dashboard}/>
             <Tab.Screen name="Report" component={Report}/>
+            <Tab.Screen name="Profile" component={Profile}/> */}
+            <Tab.Screen name="QR" component={QRScanner}/>
             <Tab.Screen name="Profile" component={Profile}/>
         </Tab.Navigator>
     )
 }
 
-export default DashboardStack
+export default UserStack

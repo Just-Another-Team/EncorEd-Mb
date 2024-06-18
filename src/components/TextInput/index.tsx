@@ -23,7 +23,7 @@ const ControlledTextInput = <T extends FieldValues>(props: ControlledTextInputTy
             <View>
                 <TextInput
                 value={value}
-                onChangeText={onChange}
+                onChangeText={onChange as any}
                 onBlur={onBlur}
                 {...props as TextInputProps}/>
 

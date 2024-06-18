@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
-import EncorEdAuthService from "../../api/encored-auth-service"
+import EncorEdAuthService from "../../api/user-service"
 import { Credentials } from "../../../types/InputType";
 import { UserCredential } from "firebase/auth";
 import { UserType } from "../../../types/output";

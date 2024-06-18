@@ -110,6 +110,6 @@
   },
   "include": [
     "src"
-  ],
+, "../EncorEd-Web/src/types/converter.ts"  ],
   "extends": "@tsconfig/react-native/tsconfig.json"
 }

@@ -6,19 +6,28 @@ export const config: {
     screens: PathConfigMap<RootStackParamList>;
 } = {
     screens: {
-        LinkPage: {
-            //edpCode = number (DEBUG: string)
-            //roomNumber = number
-            //instructor = instructor id (DEBUG: name)
-            //startSchedule = ISODateString
-            //endSchedule = ISODateString
-            // path: "deeplinkTest/:edpCode/:roomNumber/:instructor/:startSchedule/:endSchedule",
-            path: "deeplinkTest/:edpCode/:roomNumber/:instructor",
+        // LinkPage: {
+        //     //edpCode = number (DEBUG: string)
+        //     //roomNumber = number
+        //     //instructor = instructor id (DEBUG: name)
+        //     //startSchedule = ISODateString
+        //     //endSchedule = ISODateString
+        //     // path: "deeplinkTest/:edpCode/:roomNumber/:instructor/:startSchedule/:endSchedule",
+        //     path: "deeplinkTest/:edpCode/:roomNumber/:instructor",
+        //     parse: {
+        //         edpCode: (edpCode) => `${edpCode}`,
+        //         roomNumber: (roomNumber) => `${roomNumber}`,
+        //         instructor: (instructor) => `${instructor}`,
+        //     }
+        // }
+        AttendanceForm: {
+            path: "attendance/:roomId",
             parse: {
-                edpCode: (edpCode) => `${edpCode}`,
-                roomNumber: (roomNumber) => `${roomNumber}`,
-                instructor: (instructor) => `${instructor}`,
-            }
-        }
+                roomId: (roomId) => `${roomId}`
+            },
+        },
+        // OngoingSubjects: {
+        //     path: "ongoingSubjects",
+        // }
     }
 }

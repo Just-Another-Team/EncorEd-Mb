@@ -1,12 +1,7 @@
-export type RoomType = {
-    room_id?: number,
-    room_level?: string,
-    room_name?: string,
-    room_sttus?: string,
-    room_type?: string,
-    featureCoordinates?: Array<Array<number>>;
+export enum RoomType {
+    classroom = "Classroom",
+    office = "Office",
+    utility = "Utility"
 }
 
-export type RoomOptionType = {
-    label: string;
-} & RoomType
+export const RoomTypes = Object.values(RoomType)
