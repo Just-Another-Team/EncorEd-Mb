@@ -1,21 +1,15 @@
 /**
  * @format
  */
-
 import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
-import { NavigationContainer } from '@react-navigation/native';
-import { PaperProvider } from 'react-native-paper';
+import messaging from '@react-native-firebase/messaging'
 
-const AppComponent = () => {
-    return(
-        <PaperProvider>
-            <NavigationContainer>
-                <App />
-            </NavigationContainer>
-        </PaperProvider>
-    )
-}
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.log("Message handled in the background", remoteMessage)
 
-AppRegistry.registerComponent(appName, () => AppComponent);
+    // remoteMessage.data
+})
+
+AppRegistry.registerComponent(appName, () => App);

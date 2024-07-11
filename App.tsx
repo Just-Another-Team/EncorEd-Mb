@@ -4,55 +4,81 @@
  *
  * @format
  */
+import React, { useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { PaperProvider, Text } from 'react-native-paper';
+import { navigationRef } from './src/routes/RootNavigation';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Provider } from 'react-redux'
+import store, { persistor } from './src/app/encored-store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Alert, Linking, LogBox } from 'react-native'
+import { Theme } from './src/assets/styles/theme';
+import { config } from './src/types/screenConfig';
+import AuthStack from './src/routes/AuthStack';
+import { AuthProvider } from './src/context/AuthContext';
+import { AttendanceProvider } from './src/context/AttendanceContext';
+import { SubjectProvider } from './src/context/SubjectContext';
+import { RoomProvider } from './src/context/RoomContext';
+import { ClockProvider } from './src/context/ClockContext';
+import { DepartmentProvider } from './src/context/DepartmentContext';
+import { UserProvider } from './src/context/UserContext';
+import ScheduleProvider from './src/context/ScheduleContext';
+import messaging from '@react-native-firebase/messaging'
+import IndexRoute from './src/routes/index'
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import {
-  StyleSheet,
-  useColorScheme,
-} from 'react-native';
+// Background notifications here from Notifee
+// - if device is locked, application is running but not in view, or application is killed
+// notifee.onBackgroundEvent(async ({type, detail}) => {
+//   const { notification, pressAction } = detail
+//   //create trigger
+//   console.log(pressAction)
+// });
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import Landing from './src/pages/Landing';
+//Changed. Keep watch on this
+LogBox.ignoreLogs(['Warning: ....']);
+LogBox.ignoreAllLogs();
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  const Stack = createNativeStackNavigator();
+  // Foreground notification
+  // - If device is unlocked and the app is running
+  // useEffect(() => {
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage))
+  //   });
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  //   return unsubscribe
+  // }, [])
 
   return (
-    <Stack.Navigator>
-      <Stack.Screen 
-      name='Landing' 
-      options={{
-        headerShown: false
-      }}
-      component={Landing} />
-    </Stack.Navigator>
+    <Provider store={store}>
+      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+        <AuthProvider>
+          <DepartmentProvider>
+            <UserProvider>
+              <ScheduleProvider>
+                <RoomProvider>
+                  <SubjectProvider>
+                    <AttendanceProvider>
+                      <ClockProvider>
+                        <PaperProvider theme={Theme}>
+                          <GestureHandlerRootView style={{flex: 1}}>
+                            <IndexRoute />
+                          </GestureHandlerRootView>
+                        </PaperProvider>
+                      </ClockProvider>
+                    </AttendanceProvider>
+                  </SubjectProvider>
+                </RoomProvider>
+              </ScheduleProvider>
+            </UserProvider>
+          </DepartmentProvider>
+        </AuthProvider>
+      </PersistGate>
+    </Provider>
+    
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
